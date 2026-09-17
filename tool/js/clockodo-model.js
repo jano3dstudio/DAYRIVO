@@ -1,7 +1,7 @@
 (function(root){
  'use strict';
  const eligible=cat=>cat==='Kunde'; // Stable built-in ID survives category renaming.
- function select(catalog,customer,project,uid){
+ function select(catalog,customer,project,uid,service=null){
   if(project&&project.customerId!==customer?.id)throw Error('Das Projekt gehört zu einem anderen Kunden.');
   const next=JSON.parse(JSON.stringify(catalog));
   function upsert(kind,row,customerId){
@@ -18,8 +18,10 @@
    if(kind==='projects')record.customerId=customerId;
    return record;
   }
-  const localCustomer=upsert('customers',customer),localProject=project?upsert('projects',project,localCustomer.id):null;
-  return {catalog:next,customer:localCustomer,project:localProject};
+  const localCustomer=customer?upsert('customers',customer):null,localProject=project?upsert('projects',project,localCustomer.id):null;
+  if(!localCustomer&&!service)throw Error('Ungültige Clockodo-Auswahl.');
+  const localService=service?upsert('services',service):null;
+  return {catalog:next,customer:localCustomer,project:localProject,service:localService};
  }
  const api={eligible,select};
  if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.ClockodoModel=api;

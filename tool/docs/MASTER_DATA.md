@@ -1,6 +1,6 @@
 # Stammdaten
 
-Stand 16.09.2026: lokale Verwaltung im Menü „Stammdaten“ und direkt am Eintragseditor. Kategorien, Kunden, Projekte und Leistungen anlegen, umbenennen, archivieren und reaktivieren. Speicherung im bestehenden Browser-Datensatz und im Gesamtbackup. Kein neuer Server, keine Clockodo-Verbindung.
+Stand 16.09.2026: lokale Verwaltung im Menü „Stammdaten“ und direkt am Eintragseditor. Kategorien, Kunden, Projekte und Leistungen anlegen, umbenennen, archivieren und reaktivieren. Speicherung im bestehenden Browser-Datensatz und im Gesamtbackup. Optionaler gezielter Clockodo-Import über den lokalen Dienst ist seit 17.09.2026 ergänzt; siehe unten.
 
 ## Bedienung
 
@@ -28,11 +28,11 @@ Fehlt der Katalog, wird er aus Standardkategorien und den Texten gespeicherter W
 
 Backups validieren Listen, IDs, Kunden-/Projektbeziehungen, externe IDs und Auswertungsbereiche. Doppelte externe IDs und ungültige Referenzen werden abgewiesen. Fehlgeschlagenes Speichern setzt die Stammdaten im Arbeitsspeicher zurück. Die Modellfunktionen liegen in `master-data-model.js`, die Dialog- und Editoranbindung in `master-data.js`.
 
-## Spätere Clockodo-Anbindung
+## Clockodo-Anbindung
 
 `externalIds.clockodo` ist für die externe ID als positive Dezimalzeichenfolge vorgesehen. Interne IDs bleiben unabhängig davon bestehen. Kategorien sind lokale Planungsbereiche; sie werden nicht mit Clockodo-Leistungen gleichgesetzt.
 
-Die spätere Transportschicht ist noch nicht implementiert. Sie soll Stammdaten über einen lokalen Dienst laden und über externe IDs abgleichen. API-Zugangsdaten verbleiben ausschließlich beim Dienst. Ein Abgleich muss Pagination, archivierte Datensätze, Konflikte mit lokalen Änderungen und atomare Speicherung behandeln. Namen allein sind kein sicherer Synchronisierungsschlüssel. Zeiteinträge werden erst nach ausdrücklicher Freigabe übertragen.
+Die lokale Transportschicht lädt Kunden, Projekte und Leistungen. Unter Aus Clockodo importieren werden nur ausgewählte Datensätze über externe IDs abgeglichen und gespeichert; Suchfelder berücksichtigen alle geladenen Seiten. Im Wocheneditor stehen diese Daten danach offline als Vorschläge zur Verfügung. API-Zugangsdaten verbleiben ausschließlich beim Dienst. Ein Abgleich muss Pagination, archivierte Datensätze, Konflikte mit lokalen Änderungen und atomare Speicherung behandeln. Namen allein sind kein sicherer Synchronisierungsschlüssel. Zeiteinträge werden erst nach ausdrücklicher Freigabe übertragen.
 
 Quellen/Weiterführung: [offizielle Clockodo-Dokumentation](https://docs.clockodo.com/), [Kundenmodell](https://www.clockodo.com/en/api/customers/), [Leistungsmodell](https://www.clockodo.com/en/api/services/), [Projektplan](CLOCKODO.md).
 

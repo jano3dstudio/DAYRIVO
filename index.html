@@ -211,7 +211,7 @@
       <button type="button" data-master-kind="projects" aria-pressed="false">Projekte</button>
       <button type="button" data-master-kind="services" aria-pressed="false">Leistungen</button>
     </nav>
-    <div class="master-toolbar"><label class="check-label"><input id="masterShowArchived" type="checkbox">Archivierte zeigen</label><button type="button" id="masterNew">＋ Neu</button></div>
+    <div class="master-toolbar"><label class="check-label"><input id="masterShowArchived" type="checkbox">Archivierte zeigen</label><button type="button" id="masterClockodoImport" hidden>Aus Clockodo importieren</button><button type="button" id="masterNew">＋ Neu</button></div>
     <div class="master-layout">
       <div id="masterList" class="master-list" aria-label="Stammdaten auswählen"></div>
       <form id="masterForm">
@@ -257,9 +257,11 @@
 <form id="clockodoPairForm"><label>Verbindungscode<input id="clockodoPairCode" type="password" autocomplete="off" spellcheck="false" maxlength="70" placeholder="Aus dem lokalen Fenster einfügen"></label><div class="clockodo-actions"><button id="clockodoPairSubmit" type="submit">Verbinden</button></div></form>
 </details>
 <p class="dialog-note">Nur Kundenjobs. Zugangsdaten bleiben im lokalen Dienst; der Planer erhält keinen API-Key.</p><div class="clockodo-actions"><button type="button" id="clockodoDisconnect">Verbindung trennen</button><button type="button" data-close>Schließen</button></div></dialog>
-<dialog id="clockodoPickerDialog"><div class="dialog-heading"><h2>Kunde und Projekt</h2><button type="button" data-close aria-label="Schließen">×</button></div><div class="clockodo-picker">
-<label>Kunde<select id="clockodoCustomer"></select></label><div class="clockodo-pagination"><button type="button" id="clockodoCustomersPrevious" aria-label="Vorherige Seite">‹</button><small id="clockodoCustomersPage"></small><button type="button" id="clockodoCustomersNext" aria-label="Nächste Seite">›</button></div>
-<label>Projekt<select id="clockodoProject"></select></label><div class="clockodo-pagination"><button type="button" id="clockodoProjectsPrevious" aria-label="Vorherige Seite">‹</button><small id="clockodoProjectsPage"></small><button type="button" id="clockodoProjectsNext" aria-label="Nächste Seite">›</button></div>
+<dialog id="clockodoPickerDialog" aria-labelledby="clockodoPickerTitle"><div class="dialog-heading"><h2 id="clockodoPickerTitle">Kunde, Projekt und Leistung</h2><button type="button" data-close aria-label="Schließen">×</button></div><div class="clockodo-picker">
+<p id="clockodoImportHint" class="dialog-note" hidden>Relevante Projekte und Leistungen anhaken. Sie stehen danach im Wochenplan offline zur Auswahl.</p>
+<section><label>Kunde suchen<input id="clockodoCustomerSearch" type="search" autocomplete="off" placeholder="Name oder Clockodo-ID"></label><select id="clockodoCustomer" size="4" aria-label="Kunde"></select></section>
+<section><label>Projekt suchen<input id="clockodoProjectSearch" type="search" autocomplete="off" placeholder="Name oder Clockodo-ID"></label><select id="clockodoProject" size="4" aria-label="Projekt"></select><div id="clockodoProjectChecks" class="clockodo-checks" hidden></div></section>
+<section><label>Leistung suchen<input id="clockodoServiceSearch" type="search" autocomplete="off" placeholder="Name oder Clockodo-ID"></label><select id="clockodoService" size="4" aria-label="Leistung"></select><div id="clockodoServiceChecks" class="clockodo-checks" hidden></div><small id="clockodoServiceStatus" role="status"></small></section>
 <p id="clockodoPickerStatus" role="status"></p><div class="clockodo-actions"><button type="button" data-close>Abbrechen</button><button type="button" class="primary" id="clockodoUse">Auswahl übernehmen</button></div></div></dialog>
 
   <script src="tool/locales/en.js"></script>

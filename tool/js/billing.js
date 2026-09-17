@@ -57,7 +57,7 @@ function initializeBilling(){
  button.onclick=async()=>{
   closeMenu();const gen=++generation;busy=false;snapshot=null;selected.clear();dialog.replaceChildren();
   const heading=node('div',null,'dialog-heading'),close=node('button','×');close.setAttribute('aria-label',t('Schließen'));close.onclick=()=>dialog.close();heading.append(node('h2',b('Monatsabschluss','Month close')),close);
-  dialog.append(heading,node('p',b('Kundenzeiten prüfen und Rechnungsentwürfe zusammenstellen. Es wird nichts an Billomat gesendet.','Review customer time and assemble invoice drafts. Nothing is sent to Billomat.')));
+  dialog.append(heading,node('p',b('Kundenzeiten prüfen und Projekte für eigene Rechnungen zusammenstellen. Die PDF-Erzeugung wird vorbereitet; aktuell speicherst du nur Entwürfe.','Review customer time and select projects for your own invoices. PDF generation is being prepared; currently you can save drafts only.')));
   const controls=node('div',null,'billing-controls');month=node('input');month.type='month';month.value=data.selectedWeek.slice(0,7);month.id='billingMonth';customer=node('select');customer.id='billingCustomer';customer.append(new Option(b('Kunde auswählen','Select customer'),''));
   loadButton=node('button',b('Monat laden','Load month'));loadButton.id='billingLoad';loadButton.onclick=loadMonth;
   connectButton=node('button',b('Clockodo verbinden','Connect Clockodo'));connectButton.onclick=()=>{dialog.close();openClockodoSettings();};

@@ -8,9 +8,9 @@ const positive = value => Number.isSafeInteger(value) && value > 0;
 
 function requestUrl(kind, page = 1, customerId) {
   if (!positive(page) || page > 10000) fail('Ungueltige Seite.');
-  if (!['customers', 'projects'].includes(kind)) fail('Nur Kunden und Kundenprojekte sind freigegeben.');
+  if (!['customers', 'projects', 'services'].includes(kind)) fail('Nur Kunden, Kundenprojekte und Leistungen sind freigegeben.');
   if (kind === 'projects' && !positive(customerId)) fail('Bitte zuerst einen Kunden auswaehlen.');
-  const url = new URL(kind === 'customers' ? '/api/v3/customers' : '/api/v4/projects', ORIGIN);
+  const url = new URL(kind === 'customers' ? '/api/v3/customers' : kind === 'services' ? '/api/v4/services' : '/api/v4/projects', ORIGIN);
   url.searchParams.set('items_per_page', '100');
   url.searchParams.set('page', String(page));
   if (kind === 'projects') url.searchParams.set('filter[customers_id]', String(customerId));

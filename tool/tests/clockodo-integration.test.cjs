@@ -2,6 +2,16 @@ const {test}=require('node:test'),assert=require('node:assert/strict');
 const {createBridge}=require('../clockodo/bridge.cjs'),Model=require('../js/clockodo-model.js'),Master=require('../js/master-data-model.js');
 const customer={id:7,name:'Test client',active:true},project={id:9,name:'Test project',active:true,customerId:7};
 function catalog(){return {version:1,categories:[{id:'Kunde',name:'Client',group:'work',active:true}],customers:[{id:'manual',name:'Test client',active:true}],projects:[],services:[]};}
+test('services keep external identity, reject inactive rows and survive catalog validation',()=>{
+ let id=0;const source=catalog(),service={id:30,name:'Animation',active:true};
+ const selected=Model.select(source,null,null,()=>`s-${++id}`,service);
+ assert.equal(source.services.length,0);Master.validate(selected.catalog);
+ assert.equal(selected.service.externalIds.clockodo,'30');
+ const again=Model.select(selected.catalog,null,null,()=>assert.fail(),{...service,name:'Animation 3D'});
+ assert.equal(again.catalog.services.length,1);assert.equal(again.service.id,selected.service.id);
+ assert.throws(()=>Model.select(source,null,null,()=>'',{...service,active:false}));
+ assert.throws(()=>Model.select(source,null,null,()=>''));
+});
 test('direct pairing accepts only a strong bounded session token',()=>{
  for(const sessionToken of ['', 'abc', 'a'.repeat(63), 'A'.repeat(64), 'a'.repeat(64)+'\n'])assert.throws(()=>createBridge({email:'test@example.com',key:'fake'},{sessionToken}));
  const token='b'.repeat(64),bridge=createBridge({email:'test@example.com',key:'fake'},{sessionToken:token});

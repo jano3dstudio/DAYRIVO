@@ -12,7 +12,8 @@ test('only modern customer routes; projects require an explicit customer', () =>
   assert.equal(url.pathname, '/api/v4/projects');
   assert.equal(url.searchParams.get('filter[customers_id]'),'7');
   assert.equal(url.searchParams.get('page'),'2');
-  for (const kind of ['entries','users','services','https://evil.example']) assert.throws(()=>requestUrl(kind));
+  assert.equal(requestUrl('services').pathname, '/api/v4/services');
+  for (const kind of ['entries','users','https://evil.example']) assert.throws(()=>requestUrl(kind));
   for (const id of [undefined,0,-1,'7']) assert.throws(()=>requestUrl('projects',1,id));
 });
 test('requests use GET, reject redirects and expose only required response fields', async () => {

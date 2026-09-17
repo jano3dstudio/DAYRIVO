@@ -61,7 +61,7 @@ function createBridge(credentials, {fetcher=fetch, lifetimeMs=4*60*60*1000,sessi
     }
     if(req.method!=='GET')return send(405,{error:'read-only'});
     if(url.pathname==='/status')return send(200,{ok:true,account,readOnly:true,billingPreview:true});
-    const kind=url.pathname==='/customers'?'customers':url.pathname==='/projects'?'projects':null;
+    const kind=url.pathname==='/customers'?'customers':url.pathname==='/projects'?'projects':url.pathname==='/services'?'services':null;
     if(!kind || [...url.searchParams.keys()].some(k=>!['page','customerId'].includes(k)))return send(404,{error:'route'});
     const page=Number(url.searchParams.get('page')||1),customerId=Number(url.searchParams.get('customerId'));
     if(kind==='projects'&&!knownCustomers.has(customerId))return send(400,{error:'customer'});
