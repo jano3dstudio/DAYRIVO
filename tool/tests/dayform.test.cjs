@@ -1,6 +1,11 @@
 const assert=require('node:assert/strict');
 const P=require('../js/dayform-model.js');
 const d=P.createDayformData();
+assert.deepEqual(P.currentLook(d),P.validateLook(d.looks.find(p=>p.id==='df-rainbow')));
+assert.deepEqual(P.defaultLook(),P.currentLook(d));
+const custom=P.clone(d);custom.settings.appearance.accent='#123456';custom.settings.days.Montag.color='#abcdef';
+const savedLook=P.currentLook(custom);P.ensureDayform(custom);assert.deepEqual(P.currentLook(custom),savedLook);
+assert.deepEqual(P.currentLook(P.validateData(P.clone(custom))),savedLook);
 assert.equal(d.settings.needsWelcome,true);assert.equal(Object.keys(d.presets).length,5);
 P.applyPreset(d,'df-balance',d.selectedWeek);
 const w=d.weeks[d.selectedWeek],first=w.items.find(i=>i.day==='Montag');

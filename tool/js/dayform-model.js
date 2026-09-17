@@ -3,6 +3,8 @@
  'use strict';
  const P=typeof module!=='undefined'&&module.exports?require('./planner.js'):root.Planner;
  const baseMetrics=P.weekMetrics;
+ const rainbowColors=['#ff6b8a','#ffad5c','#f1df6f','#63e6b5','#ab8aff'];
+ function defaultLook(){return {accent:'#ff77b7',frame:'dashed',days:Object.fromEntries(P.days.map((day,i)=>[day,rainbowColors[i]]))};}
  const editableItems=data=>[data.template,...Object.values(data.presets).map(p=>p.items),...(data.dayPresets||[]).map(p=>p.items),...Object.values(data.weeks).map(w=>w.items)].flat();
  function starterPresets(){
   const definitions=[
@@ -17,7 +19,7 @@
  function ensureDayform(data){
   if(!data.settings.lookCollectionV2){
    const palettes=[
-    ['rainbow','Rainbow','#ff77b7',['#ff6b8a','#ffad5c','#f1df6f','#63e6b5','#ab8aff']],
+    ['rainbow','Rainbow','#ff77b7',rainbowColors],
     ['arcade','Neon Arcade','#66ffcc',['#ff47a6','#bd6aff','#48d9ff','#b5ff46','#ffca4b']],
     ['sunset','Electric Sunset','#ff9862',['#ff657d','#ff9e64','#fbd477','#cc83d5','#888bff']],
     ['glacier','Glacier','#6ee7ed',['#75aaff','#6dd4ed','#70ebca','#91bbeb','#bba2ee']],
@@ -60,7 +62,10 @@
   const data=P.createData();data.presets={};data.dayPresets=[];data.template=[];data.weeks={};
   data.defaultPresetId='df-blank';data.settings.needsWelcome=true;
   for(const day of P.days)data.settings.days[day].subtitle='';
-  ensureDayform(data);P.ensureWeek(data,data.selectedWeek);return data;
+  ensureDayform(data);
+  const look=defaultLook();data.settings.appearance={accent:look.accent,frame:look.frame};
+  for(const day of P.days)data.settings.days[day].color=look.days[day];
+  P.ensureWeek(data,data.selectedWeek);return data;
  }
  function validateDayform(data){
   const hours=data.settings.planningHours;
@@ -138,6 +143,6 @@
   else throw new Error('Ungültiger Löschumfang.');
   return next;
  }
- Object.assign(P,{ensureDayform,createDayformData,validateDayform,editableItems,assignTitle,captureDay,weekMetrics,dayMetrics,clearPlanning,starterPresets});
+ Object.assign(P,{defaultLook,ensureDayform,createDayformData,validateDayform,editableItems,assignTitle,captureDay,weekMetrics,dayMetrics,clearPlanning,starterPresets});
  if(typeof module!=='undefined'&&module.exports)module.exports=P;
 })(globalThis);
