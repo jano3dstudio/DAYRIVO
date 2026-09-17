@@ -526,7 +526,7 @@ $('languageSelect').onchange = () => {
   if (!persist()) { data.settings.language = previous; refreshLanguageUI(); }
   closeMenu(); render();
 };
-data = load(); initializeMasterData(); initializeLanguagePicker(); refreshLanguageUI(); initializeOverview(); initializeLooks(); initializeDayPresets(); render(); initializeDayform(); initializeRefinements(); initializeRhythm(); initializeClockodo();
+data = load(); initializeMasterData(); initializeLanguagePicker(); refreshLanguageUI(); initializeOverview(); initializeLooks(); initializeDayPresets(); render(); initializeDayform(); initializeRefinements(); initializeRhythm(); initializeClockodo(); initializeBilling();
 if (loadError) {
   $('saveStatus').textContent = t("Daten nicht geladen"); $('saveStatus').classList.add('error');
   notify(t("Vorhandene Daten konnten nicht gelesen werden und wurden nicht überschrieben: ") + loadError.message,true);

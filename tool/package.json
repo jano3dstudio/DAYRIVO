@@ -8,7 +8,8 @@
     "test:browser": "node tests/dayform-browser.test.cjs && node tests/refinements-browser.test.cjs && node tests/rhythm-browser.test.cjs && node tests/clockodo-browser.test.cjs && node tests/clockodo-direct-browser.test.cjs",
     "test:landing": "node tests/landing.test.cjs",
     "build:web": "node scripts/build-public.cjs",
-    "test:web": "node tests/public-browser.test.cjs"
+    "test:web": "node tests/public-browser.test.cjs",
+    "test:billing": "node --test tests/billing.test.cjs && node tests/billing-browser.test.cjs"
   },
   "engines": {
     "node": ">=22"

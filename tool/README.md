@@ -82,3 +82,6 @@ Private project; no open-source license has been granted. Publication and licens
 ## Public browser edition
 
 Build and verify with npm run build:web and npm run test:web from tool/. Only the generated dist/public/index.html is published. See [public web delivery](docs/PUBLIC_WEB.md) for the deployment status and differences from the local version.
+
+## Monatsabschluss (lokaler Pilot)
+Links unter Auswertung: Kundenzeiten aus Clockodo lesen und Projekte/Buchungen als Rechnungsauswahl reservieren. Separate SQLite-Datenbank und Backups unter %LOCALAPPDATA%/DAYRIVO/billing; keine Rechnungen oder Billomat-Schreibzugriffe. Clockodo-Dienst nach dem Update neu starten. Node.js 22.13+ fuer diesen Pilot. Ablauf, offene Live-Abnahme und Billomat-Plan: [BILLING.md](docs/BILLING.md). Test: npm run test:billing.

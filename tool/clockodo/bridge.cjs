@@ -2,13 +2,17 @@
 const http = require('node:http');
 const crypto = require('node:crypto');
 const {probe} = require('./client.cjs');
+const path=require('node:path'),os=require('node:os');
+const Billing=require('./billing.cjs');
 
 // No static files, arbitrary URLs or write endpoints. The API key never reaches the browser.
-function createBridge(credentials, {fetcher=fetch, lifetimeMs=4*60*60*1000,sessionToken}={}) {
+function createBridge(credentials, {fetcher=fetch, lifetimeMs=4*60*60*1000,sessionToken,billingDirectory=path.join(process.env.LOCALAPPDATA||os.homedir(),'DAYRIVO','billing')}={}) {
   if(sessionToken!==undefined&&(typeof sessionToken!=='string'||sessionToken.length!==64||!/^[a-f0-9]{64}$/.test(sessionToken)))throw Error('Invalid pairing token');
   const token=sessionToken||crypto.randomBytes(32).toString('hex');
   const account=crypto.createHash('sha256').update(credentials.email.trim().toLowerCase()).digest('hex');
   const knownCustomers=new Set();
+  const snapshots=new Map();let billingStore;
+  const store=()=>billingStore||=(Billing.createStore(account,billingDirectory));
   let busy=false, stopped=false;
   const server=http.createServer(async(req,res)=>{
     const send=(code,payload)=>{res.writeHead(code,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(payload));};
@@ -26,8 +30,37 @@ function createBridge(credentials, {fetcher=fetch, lifetimeMs=4*60*60*1000,sessi
     if(provided.length!==expected.length || !crypto.timingSafeEqual(provided,expected)) return send(401,{error:'pairing'});
     const url=new URL(req.url,'http://127.0.0.1');
     if(url.pathname==='/disconnect' && req.method==='POST') {res.setHeader('Connection','close');send(200,{ok:true});return stop();}
+    if(url.pathname.startsWith('/billing/')){
+      const route=url.pathname;
+      if(!['/billing/month','/billing/drafts','/billing/release'].includes(route))return send(404,{error:'route'});
+      if((route==='/billing/month'&&req.method!=='GET')||(route==='/billing/release'&&req.method!=='POST')||(route==='/billing/drafts'&&!['GET','POST'].includes(req.method)))return send(405,{error:'method'});
+      if(busy)return send(429,{error:'busy'});busy=true;
+      try{
+        if(route==='/billing/month'){
+          const customerId=Number(url.searchParams.get('customerId')),month=url.searchParams.get('month');
+          if(!knownCustomers.has(customerId)||[...url.searchParams.keys()].some(k=>!['customerId','month'].includes(k)))return send(400,{error:'customer'});
+          const snapshot=await Billing.readMonth(credentials,customerId,month,fetcher),snapshotId=crypto.randomUUID();
+          if(snapshots.size>=8)snapshots.delete(snapshots.keys().next().value);snapshots.set(snapshotId,snapshot);
+          const reserved=store().reservations();
+          return send(200,{...snapshot,snapshotId,account,rows:snapshot.rows.map(row=>({...row,reservedBy:reserved.get(row.id)||null}))});
+        }
+        if([...url.searchParams.keys()].length)return send(400,{error:'query'});
+        if(req.method==='GET')return send(200,{account,drafts:store().list()});
+        let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>150000)return send(413,{error:'size'});}
+        let body;try{body=JSON.parse(raw);}catch{return send(400,{error:'input'});}
+        if(route==='/billing/release')return send(200,{account,ok:true,...store().release(body.id)});
+        const snapshot=snapshots.get(body.snapshotId);
+        if(!snapshot||Date.now()-Date.parse(snapshot.fetchedAt)>600000)return send(409,{error:'refresh'});
+        if(!Array.isArray(body.entryIds)||!body.entryIds.length||body.entryIds.length>10000)return send(400,{error:'selection'});
+        // Check the source again before reserving any entry; never silently change a draft.
+        const fresh=await Billing.readMonth(credentials,snapshot.customerId,snapshot.month,fetcher),current=new Map(fresh.rows.map(row=>[row.id,row]));
+        for(const id of body.entryIds){const row=snapshot.rows.find(r=>r.id===id);if(!row||!current.has(id)||Billing.fingerprint(row)!==Billing.fingerprint(current.get(id)))return send(409,{error:'changed'});}
+        const saved=store().save(snapshot,body.entryIds,body.title);snapshots.delete(body.snapshotId);
+        return send(200,{account,...saved,ok:true});
+      }catch{return send(409,{error:'billing'});}finally{busy=false;}
+    }
     if(req.method!=='GET')return send(405,{error:'read-only'});
-    if(url.pathname==='/status')return send(200,{ok:true,account,readOnly:true});
+    if(url.pathname==='/status')return send(200,{ok:true,account,readOnly:true,billingPreview:true});
     const kind=url.pathname==='/customers'?'customers':url.pathname==='/projects'?'projects':null;
     if(!kind || [...url.searchParams.keys()].some(k=>!['page','customerId'].includes(k)))return send(404,{error:'route'});
     const page=Number(url.searchParams.get('page')||1),customerId=Number(url.searchParams.get('customerId'));
@@ -42,7 +75,7 @@ function createBridge(credentials, {fetcher=fetch, lifetimeMs=4*60*60*1000,sessi
   });
   const timer=setTimeout(stop,lifetimeMs);timer.unref();
   function stop(){if(stopped)return;stopped=true;clearTimeout(timer);credentials.key='';server.close();server.closeIdleConnections();}
-  server.on('close',()=>{clearTimeout(timer);credentials.key='';});
+  server.once('close',()=>{clearTimeout(timer);credentials.key='';billingStore?.close();snapshots.clear();});
   return {server,token,account,stop};
 }
 

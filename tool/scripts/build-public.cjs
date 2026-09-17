@@ -19,6 +19,7 @@ function buildPublic(output=path.join(root,'tool/dist/public/index.html')){
  html=html.replace(/<link rel="stylesheet" href="(tool\/css\/[^"?]+)(?:\?[^"]*)?">/g,(_,file)=>'<style>'+fs.readFileSync(path.join(root,file),'utf8').replace(/<\/style/gi,'<\\/style')+'</style>');
  html=html.replace(/<script src="(tool\/(?:js|locales)\/[^"?]+)(?:\?[^"]*)?"><\/script>/g,(_,file)=>{
   let source=file==='tool/js/clockodo.js'?publicClockodo:fs.readFileSync(path.join(root,file),'utf8');
+  if(file==='tool/js/billing.js')source="function initializeBilling(){document.getElementById('billingButton').hidden=true;}";
   if(file==='tool/locales/clockodo-en.js'||file==='tool/js/clockodo-model.js')return '';
   if(file==='tool/js/planner.js'){
    const personal=/  function defaultItems\(\) \{[\s\S]*?\n  \}\r?\n  const freshItems/;

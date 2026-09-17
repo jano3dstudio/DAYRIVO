@@ -41,7 +41,7 @@ const {pathToFileURL}=require('node:url'),{createBridge}=require('../clockodo/br
   await page.locator('#itemCategory').selectOption('AI / Firma');assert.equal(await page.locator('#clockodoChoose').isVisible(),false);
   await page.keyboard.press('Escape');await page.locator('#languageButton').click();await page.locator('#languageMenu [data-language=en]').click();
   await page.locator('#menuButton').click();await page.locator('#menuClockodo').click();await page.locator('#clockodoConnectionStatus').filter({hasText:'Connected'}).waitFor();
-  await page.locator('#clockodoDisconnect').click();assert.match(await page.locator('#clockodoConnectionStatus').textContent(),/disconnected/i);
+  await page.locator('#clockodoDisconnect').click();await page.locator('#clockodoConnectionStatus').filter({hasText:/disconnected/i}).waitFor();assert.match(await page.locator('#clockodoConnectionStatus').textContent(),/disconnected/i);
   await page.keyboard.press('Escape');await page.locator('.item-main').first().click();await page.locator('#customerDetails summary').click();await page.locator('#clockodoChoose').click();
   await page.locator('#clockodoPickerStatus').filter({hasText:'Click Start Clockodo'}).waitFor();
   await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);await page.screenshot({path:path.join(__dirname,'artifacts/clockodo-mobile.png')});

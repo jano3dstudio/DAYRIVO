@@ -35,3 +35,7 @@ jobs:
       - run: npm run test:web
         env:
           PLAYWRIGHT_CHANNEL: chromium
+
+      - run: npm run test:billing
+        env:
+          PLAYWRIGHT_CHANNEL: chromium

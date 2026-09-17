@@ -1,0 +1,9 @@
+#billingDialog{width:min(960px,calc(100vw - 32px));max-height:90vh;overflow:auto}
+.billing-controls{display:grid;grid-template-columns:160px minmax(180px,1fr) auto auto;gap:12px;align-items:end}
+#billingDialog label{display:grid;gap:8px;margin:0}#billingDialog input,#billingDialog select{min-width:0;width:100%}
+.billing-status{color:var(--muted);min-height:2.5em}.billing-project,.billing-draft{padding:16px;border:1px solid var(--border);border-radius:8px;margin:12px 0;background:var(--panel)}
+.billing-project-head{display:flex;justify-content:space-between;gap:12px}#billingDialog .billing-project-head label,#billingDialog .billing-entry{display:flex;flex-direction:row;align-items:flex-start;gap:12px}
+#billingDialog input[type=checkbox]{width:20px;height:20px;flex:0 0 20px;margin-top:2px;accent-color:var(--accent)}
+.billing-entry{padding:12px 0;border-top:1px solid var(--border)}.billing-entry span{min-width:0;overflow-wrap:anywhere}.billing-entry small{display:block;margin-top:4px;color:var(--muted)}
+.billing-project p{color:var(--muted);font-size:13px}#billingSummary{padding:16px 0;border-top:1px solid var(--border)}#billingSave{margin-top:16px}#billingDialog h3{margin-top:28px}.billing-draft details{margin-bottom:12px}
+@media(max-width:720px){.billing-controls{grid-template-columns:1fr 1fr}#billingDialog{padding:20px}.billing-project-head{flex-wrap:wrap}.billing-controls button{min-height:44px}}
