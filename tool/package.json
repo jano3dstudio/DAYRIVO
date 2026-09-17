@@ -6,7 +6,9 @@
   "scripts": {
     "test": "node --test tests/planner.test.cjs tests/master-data-model.test.cjs tests/dayform.test.cjs tests/refinements.test.cjs tests/rhythm.test.cjs tests/clockodo.test.cjs tests/clockodo-integration.test.cjs",
     "test:browser": "node tests/dayform-browser.test.cjs && node tests/refinements-browser.test.cjs && node tests/rhythm-browser.test.cjs && node tests/clockodo-browser.test.cjs && node tests/clockodo-direct-browser.test.cjs",
-    "test:landing": "node tests/landing.test.cjs"
+    "test:landing": "node tests/landing.test.cjs",
+    "build:web": "node scripts/build-public.cjs",
+    "test:web": "node tests/public-browser.test.cjs"
   },
   "engines": {
     "node": ">=22"

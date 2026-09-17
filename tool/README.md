@@ -78,3 +78,7 @@ Created by [Jona Fynn Schlegelmilch](https://www.linkedin.com/in/jonaschlegelmil
 Private project; no open-source license has been granted. Publication and licensing decisions remain separate.
 
 - [Daily highlight and weekly rhythm](docs/RHYTHM.md): meaning, snapshots and validation.
+
+## Public browser edition
+
+Build and verify with npm run build:web and npm run test:web from tool/. Only the generated dist/public/index.html is published. See [public web delivery](docs/PUBLIC_WEB.md) for the deployment status and differences from the local version.

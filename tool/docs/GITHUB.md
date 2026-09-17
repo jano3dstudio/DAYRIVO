@@ -1,6 +1,6 @@
 # DAYRIVO auf GitHub
 
-Stand: 17.09.2026. Lokales Repository: `JS_GitHub/DAYRIVO`. Verbundenes Ziel: `https://github.com/jano3dstudio/DAYRIVO.git`. Das Repository soll privat bleiben; GitHub Pages und eine Open-Source-Lizenz sind nicht aktiviert. Der Upload erfolgt erst mit Push; eine Remote-Adresse allein bedeutet noch keinen hochgeladenen Quellcode.
+Stand: 17.09.2026. Lokales Repository: `JS_GitHub/DAYRIVO`. Verbundenes Ziel: `https://github.com/jano3dstudio/DAYRIVO.git`. Das Entwicklungs-Repository bleibt privat. Eine öffentliche Browser-Ausgabe ist separat freigegeben; siehe [Web-Veröffentlichung](PUBLIC_WEB.md). Eine Open-Source-Lizenz ist nicht gesetzt. Der Upload erfolgt erst mit Push; eine Remote-Adresse allein bedeutet noch keinen hochgeladenen Quellcode.
 
 ## Die drei Begriffe
 
@@ -13,7 +13,7 @@ Stand: 17.09.2026. Lokales Repository: `JS_GitHub/DAYRIVO`. Verbundenes Ziel: `h
 1. Repository **DAYRIVO**, Branch **main** auswählen.
 2. Wenn Änderungen vorhanden sind: prüfen, eine kurze Summary schreiben und **Commit to main** drücken.
 3. **Push origin** drücken. Wenn der Knopf noch nicht angeboten wird, zunächst **Fetch origin** verwenden.
-4. Unter **Repository → View on GitHub** den Quellcode und das Kennzeichen **Private** prüfen. Für dieses Projekt keine öffentliche Veröffentlichung auswählen.
+4. Unter **Repository → View on GitHub** den Quellcode und das Kennzeichen **Private** prüfen. Das Entwicklungs-Repository privat lassen; die freigegebene Web-Ausgabe liegt separat in DAYRIVO-web.
 
 ## Was gehört hinein?
 
