@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="de">
+<!-- Maintenance: read tool/AGENTS.md and tool/README.md. Keep this entry point and its storage identity stable. -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#111416">
+  <title>DAYRIVO — Your day. Your rhythm.</title>
+  <link rel="icon" href="tool/assets/dayform-mark.png">
+  <link rel="stylesheet" href="tool/css/styles.css?v=20260917-drag-time">
+  <link rel="stylesheet" href="tool/css/looks.css">
+  <link rel="stylesheet" href="tool/css/month.css">
+  <link rel="stylesheet" href="tool/css/finance.css">
+  <link rel="stylesheet" href="tool/css/reminders.css">
+  <link rel="stylesheet" href="tool/css/language-picker.css">
+  <link rel="stylesheet" href="tool/css/master-data.css">
+  <link rel="stylesheet" href="tool/css/entry-icons.css?v=20260917-category">
+  <link rel="stylesheet" href="tool/css/color-editor.css">
+  <link rel="stylesheet" href="tool/css/dayform.css">
+  <link rel="stylesheet" href="tool/css/refinements.css">
+  <link rel="stylesheet" href="tool/css/rhythm.css">
+  <link rel="stylesheet" href="tool/css/clockodo.css">
+</head>
+<body>
+  <header class="topbar"><div class="shell header-inner">
+    <div class="brand"><img class="studio-logo dayform-logo" src="tool/assets/dayform-mark.png" alt="" width="28" height="28"><h1>DAYRIVO <span>1.0</span></h1></div>
+    <div id="headerContext" class="header-context"></div>
+    <div class="header-actions">
+      <button id="nextWeekButton" aria-haspopup="dialog">Nächste Woche <span aria-hidden="true">↗</span></button>
+      <div class="menu-wrap"><button id="menuButton" aria-label="Settings" aria-haspopup="menu" aria-expanded="false" aria-controls="menu">Settings <span aria-hidden="true">⌄</span></button>
+        <div id="menu" class="menu" hidden>
+          <button id="menuAdd">Eintrag erstellen <span>＋</span></button>
+          <button id="menuPresets">Wochenpresets</button>
+          <button id="menuMasterData">Stammdaten</button>
+          <button id="menuClockodo">Clockodo</button>
+          <button id="menuSettings">Planung & Daten</button>
+          <button id="menuTitles">Titel verwalten</button>
+          <button id="menuReview">Woche abschließen</button>
+          <button id="menuNextWeek">Nächste Woche</button>
+          <button id="menuFolder">Backup-Ordner verbinden</button>
+          <button id="menuRestore">Backup wiederherstellen</button>
+          <p id="folderStatus">Projektordner noch nicht verbunden</p>
+        </div>
+      </div>
+      <button id="looksButton" aria-haspopup="dialog">Looks <span aria-hidden="true">↗</span></button>
+      <button id="backupButton">Backup</button>
+      <div class="language-picker">
+        <select id="languageSelect" aria-label="Sprache" hidden tabindex="-1" aria-hidden="true"><option value="de" lang="de">Deutsch</option><option value="en" lang="en">English</option></select>
+        <button id="languageButton" type="button" aria-label="Sprache" title="Sprache" aria-haspopup="menu" aria-expanded="false" aria-controls="languageMenu"><span id="languageLabel">Deutsch</span><span class="language-chevron" aria-hidden="true">⌄</span></button>
+        <div id="languageMenu" class="language-menu" role="menu" aria-label="Sprache" hidden></div>
+      </div>
+      <span id="saveStatus" class="save-status" role="status">Lokal gespeichert</span>
+    </div>
+  </div></header>
+  <main class="shell">
+    <div class="workspace">
+      <aside class="sidebar" aria-label="Ansichten und Wochenfortschritt">
+        <div class="sidebar-label">DEIN OFFICE</div>
+        <nav class="section-nav" aria-label="Ansicht wählen">
+          <button data-section="week" aria-pressed="true"><span aria-hidden="true">▥</span> Woche</button>
+          <button data-section="month" aria-pressed="false"><span aria-hidden="true">▦</span> Monat</button>
+          <button data-section="insights" aria-pressed="false"><span aria-hidden="true">◔</span> Auswertung</button>
+        </nav>
+        <section id="sidebarProgress" class="sidebar-progress" aria-live="polite"></section>
+        <button id="capturePlanButton" class="capture-plan">Wochenplan festhalten</button>
+        <section id="summary" class="sidebar-summary" aria-label="Geplante Wochenstunden"></section>
+        <div class="sidebar-bottom"><button id="presetsButton">Wochenpresets <span>↗</span></button><p>Planen. Fokus halten.<br>Am Ende sehen, was bleibt.</p></div>
+      </aside>
+      <div class="main-content">
+    <section class="toolbar" aria-label="Zeitraumnavigation">
+      <div class="week-navigation"><button id="previousWeek" class="icon-button" aria-label="Vorherige Woche">‹</button><button id="followingWeek" class="icon-button" aria-label="Nächste Woche">›</button><h2 id="weekLabel"></h2><span id="weekNumber" class="week-number"></span><button id="todayButton">Heute</button></div>
+    </section>
+    <section id="presetBanner" class="preset-banner" hidden><div><strong>Preset bearbeiten</strong><span>Einträge werden separat als Vorlage gespeichert.</span></div><button id="finishPreset" class="primary">Zur Kalenderwoche</button></section>
+    <nav id="mobileTabs" aria-label="Wochentag"></nav>
+    <section class="calendar" aria-label="Wochenplan"><div id="week" class="week"></div></section>
+    <div id="dayFooters" aria-hidden="true"></div>
+    <section id="monthPanel" class="month-panel" aria-label="Monatsübersicht" hidden></section>
+    <section id="insightsPanel" class="insights-panel" aria-label="Wochenauswertung" hidden></section>
+      </div>
+    </div>
+    <footer><a class="creator-credit" href="https://www.linkedin.com/in/jonaschlegelmilch/" target="_blank" rel="noopener noreferrer">Created by Jona Fynn Schlegelmilch</a><button id="planningShortcut" class="planning-shortcut" type="button"></button></footer>
+  </main>
+  <dialog id="nextWeekDialog" aria-labelledby="nextWeekTitle"><form id="nextWeekForm">
+    <div class="dialog-heading"><h2 id="nextWeekTitle">Nächste Woche</h2><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div>
+    <p id="nextWeekDate" class="dialog-note"></p>
+    <label>Wochenpreset<select id="nextWeekPreset" required></select></label>
+    <p id="nextWeekInfo" class="dialog-note"></p>
+    <div id="nextWeekBreakdown" class="next-week-breakdown" aria-live="polite"></div>
+    <p id="nextWeekError" class="form-error" role="alert"></p>
+    <div class="dialog-actions"><span></span><div><button type="button" data-close>Abbrechen</button><button type="submit" class="primary">Woche öffnen</button></div></div>
+  </form></dialog>
+  <dialog id="reminderDialog" aria-labelledby="reminderTitle">
+    <div class="dialog-heading"><h2 id="reminderTitle">Quick-To-dos</h2><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div>
+    <p id="reminderDate" class="dialog-note"></p>
+    <form id="reminderForm"><label for="reminderText">Kurze Erinnerung</label><div class="reminder-entry"><input id="reminderText" required maxlength="160" autocomplete="off" placeholder="Zum Beispiel: Angebot verschicken"><button id="reminderSave" class="primary" type="submit">Hinzufügen</button></div><button id="reminderCancelEdit" type="button" hidden>Bearbeiten abbrechen</button></form>
+    <p id="reminderError" class="form-error" role="alert"></p>
+    <div id="reminderList" class="reminder-list"></div>
+    <p class="dialog-note">Nur für diesen Tag · ohne Zeitblock oder Honorar.</p>
+  </dialog>
+  <dialog id="itemDialog" aria-labelledby="itemDialogTitle">
+    <form id="itemForm">
+      <div class="dialog-heading"><h2 id="itemDialogTitle">Eintrag bearbeiten</h2><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div>
+      <div class="entry-title-row"><div class="entry-icon-field"><span class="entry-icon-label">Icon</span><details id="entryIconPicker"><summary id="entryIconSummary" aria-label="Icon auswählen"><span id="entryIconPreview"></span></summary><div id="entryIconChoices" role="group" aria-label="Eintrags-Icons"></div></details></div><label>Titel<input id="itemTitle" required maxlength="200" autocomplete="off"></label></div>
+      <div class="title-library"><label><span class="field-heading"><span>Titeltyp</span><button id="manageTitles" type="button" class="text-button">Verwalten</button></span><select id="itemTitleType"></select></label><label id="newStandardLabel" class="check-label"><input type="checkbox" id="newStandardTitle">Als Standardtitel speichern</label><p id="titleScopeHint" class="dialog-note"></p></div>
+      <div class="form-row"><label>Tag<select id="itemDay"></select></label><label><span class="field-heading"><span>Kategorie</span><button type="button" id="manageCategories" class="text-button">Verwalten</button></span><select id="itemCategory"></select></label></div>
+      <div class="form-row time-fields"><label for="itemStartButton">Von<select id="itemStart" required hidden tabindex="-1" aria-hidden="true"></select></label><label for="itemEndButton">Bis<select id="itemEnd" required hidden tabindex="-1" aria-hidden="true"></select></label><output id="itemDuration"></output></div>
+      <label>Beschreibung<textarea id="itemDescription" rows="3" placeholder="Details zu diesem Eintrag …" maxlength="5000"></textarea></label>
+      <details id="customerDetails"><summary>Kundendetails <span>optional</span></summary><div class="customer-fields">
+        <div id="clockodoEntryTools" class="clockodo-tools" hidden><button type="button" id="clockodoChoose">Aus Clockodo wählen</button><small id="clockodoEntryState"></small></div>
+        <label>Kunde<input id="itemCustomer" list="customerSuggestions" maxlength="200" autocomplete="off"></label>
+        <label>Projekt<input id="itemProject" list="projectSuggestions" maxlength="200" autocomplete="off"></label>
+        <label>Leistung<input id="itemService" list="serviceSuggestions" maxlength="200" autocomplete="off"></label>
+        <datalist id="customerSuggestions"></datalist><datalist id="projectSuggestions"></datalist><datalist id="serviceSuggestions"></datalist>
+        <button type="button" id="manageCustomers" class="text-button">Stammdaten verwalten</button>
+        <label id="actualLabel">Bisherige Arbeitsnotiz<input id="itemActual" maxlength="1000"></label>
+      </div></details>
+      <details id="actualTimeDetails"><summary>Erfasste Arbeitszeit <span>manuell</span></summary><label>Stunden:Minuten<input id="itemActualTime" maxlength="5" placeholder="Zum Beispiel: 1:30" autocomplete="off" aria-describedby="actualTimeHint"></label><p id="actualTimeHint" class="dialog-note">Leer = noch nicht erfasst. Auswertung und Honorar zählen die erfasste Zeit abgehakter Jobs.</p></details>
+      <details id="feeDetails"><summary>Honorar <span>optional</span></summary><div class="fee-fields"><label>Stundensatz · €/h<input id="itemHourlyRate" inputmode="decimal" maxlength="12" placeholder="Ohne Stundensatz" autocomplete="off"></label><div class="fee-preview"><span>Geplanter Wert</span><output id="itemFeePreview" aria-live="polite">—</output><span>Erfasster Wert</span><output id="itemActualFeePreview" aria-live="polite">—</output></div></div><p class="dialog-note">Leer = nicht bewertet · 0 = unbezahlt. Plan und erfasste Zeit bleiben getrennt.</p></details>
+      <label class="check-label item-highlight-label"><input id="itemHighlight" type="checkbox"> Mein Tageshighlight</label>
+      <label class="check-label"><input id="itemDone" type="checkbox"> Erledigt</label>
+      <p id="itemError" class="form-error" role="alert"></p>
+      <div class="dialog-actions"><button type="button" id="deleteItem" class="danger">Löschen</button><div><button type="button" data-close>Abbrechen</button><button class="primary" type="submit">Speichern</button></div></div>
+    </form>
+  </dialog>
+  <dialog id="dayDialog" aria-labelledby="dayDialogTitle">
+    <form id="dayForm">
+      <div class="dialog-heading"><h2 id="dayDialogTitle">Tag bearbeiten</h2><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div>
+      <label>Tagespreset<select id="dayPresetSelect"><option value="">Einträge beibehalten</option></select></label>
+      <p id="dayPresetInfo" class="dialog-note"></p>
+      <div id="dayPresetPreview" class="day-preset-preview" hidden></div>
+      <details id="dayPresetManage" class="day-preset-manage"><summary>Eigene Tagespresets</summary>
+        <label>Name<input id="dayPresetName" maxlength="80" placeholder="Zum Beispiel Fokus-Tag" autocomplete="off"></label>
+        <div class="look-actions"><button type="button" id="saveDayPreset">Aktuellen Tag als Preset speichern</button><button type="button" id="deleteDayPreset" class="danger" disabled>Gewähltes Preset löschen</button></div>
+        <p class="dialog-note">Speichert die aktuellen Einträge dieses Tages als separate Vorlage.</p>
+      </details>
+      <p id="dayPresetMessage" class="dialog-note" role="status"></p>
+      <label>Subline<input id="daySubtitle" maxlength="120"></label>
+      <label class="color-label">Tagesfarbe<input id="dayColor" type="color"></label>
+      <p class="dialog-note">Farbe und Subline gelten für diesen Wochentag in allen Wochen.</p>
+      <div class="dialog-actions"><span></span><div><button type="button" data-close>Abbrechen</button><button class="primary" type="submit">Speichern</button></div></div>
+    </form>
+  </dialog>
+  <dialog id="restoreDialog" aria-labelledby="restoreTitle"><form id="restoreForm">
+    <div class="dialog-heading"><h2 id="restoreTitle">Backup wiederherstellen</h2><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div>
+    <p id="restoreInfo"></p><p class="dialog-note">Die aktuellen Wochen werden ersetzt. Der bisherige Stand bleibt als lokale Wiederherstellungskopie im Browser erhalten.</p>
+    <div class="dialog-actions"><span></span><div><button type="button" data-close>Abbrechen</button><button class="primary" type="submit">Wiederherstellen</button></div></div>
+  </form></dialog>
+  <dialog id="presetsDialog" aria-labelledby="presetsTitle">
+    <div class="dialog-heading"><h2 id="presetsTitle">Wochenpresets</h2><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div>
+    <label>Gespeicherte Vorlage<select id="presetSelect"></select></label>
+    <p id="presetInfo" class="dialog-note"></p>
+    <label class="check-label"><input id="presetDefault" type="checkbox"> Für neue Kalenderwochen verwenden</label>
+    <div class="preset-actions"><button id="editPreset">Preset bearbeiten</button><button id="applyPreset" class="primary">Auf diese Woche anwenden</button></div>
+    <button id="deletePreset" class="preset-delete danger">Preset löschen</button>
+    <form id="createPresetForm" class="preset-create">
+      <h3>Neues Preset</h3>
+      <label>Name<input id="presetName" placeholder="Zum Beispiel Urlaub" required maxlength="80"></label>
+      <label>Ausgangspunkt<select id="presetSource"><option value="empty">Leere Woche</option><option value="week">Aktuelle Kalenderwoche kopieren</option><option value="preset">Gewähltes Preset kopieren</option></select></label>
+      <p id="presetError" class="form-error" role="alert"></p>
+      <button class="primary" type="submit">Anlegen und bearbeiten</button>
+    </form>
+  </dialog>
+  <dialog id="captureDialog" aria-labelledby="captureTitle"><form id="captureForm">
+    <div class="dialog-heading"><h2 id="captureTitle">Wochenplan festhalten</h2><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div>
+    <p id="captureInfo" class="dialog-note"></p>
+    <label>Vergleichspreset<select id="capturePreset"></select></label>
+    <p class="dialog-note">Dieser Stand bleibt als Ausgangsplan erhalten, auch wenn du später Einträge verschiebst, kürzt oder löschst. Neue Aufgaben werden zusätzlich ausgewiesen.</p>
+    <div class="dialog-actions"><span></span><div><button type="button" data-close>Abbrechen</button><button type="submit" class="primary">Plan festhalten</button></div></div>
+  </form></dialog>
+  <dialog id="looksDialog" aria-labelledby="looksTitle"><form id="looksForm">
+    <div class="dialog-heading"><div><span class="sidebar-kicker">DEIN STUDIO. DEIN LOOK.</span><h2 id="looksTitle">Looks</h2></div><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div>
+    <label>Farbpreset<select id="lookSelect"></select></label>
+    <div class="look-preview" id="lookPreview" aria-label="Farbvorschau"></div>
+    <div class="look-controls"><label>Akzent<button type="button" id="lookAccent" class="color-field" aria-label="Akzent bearbeiten"></button></label><label>Rahmen<select id="lookFrame"><option value="dashed">Gestrichelt</option><option value="solid">Durchgezogen</option><option value="none">Ohne Rahmen</option></select></label></div>
+    <div class="look-section-label">Deine Wochentage</div>
+    <div id="lookDays" class="look-days" aria-label="Farben der Wochentage"></div>
+    <details class="look-management"><summary>Presets verwalten</summary>
+      <label>Name<input id="lookName" maxlength="80" placeholder="Mein Studio-Look" autocomplete="off"></label>
+      <div class="look-actions"><button type="button" id="lookCreate">Als neues Preset</button><button type="button" id="lookUpdate">Aktualisieren</button><button type="button" id="lookDelete" class="danger">Löschen</button></div>
+      <div class="look-actions look-files"><button type="button" id="lookExport">Preset exportieren</button><button type="button" id="looksExport">Alle exportieren</button><button type="button" id="lookImport">Importieren</button></div>
+      <p class="dialog-note">Export als JSON im Projektordner unter <b>looks/</b>.</p>
+    </details>
+    <p id="lookMessage" class="dialog-note" role="status"></p>
+    <p class="dialog-note">Farbfeld anklicken zum Bearbeiten. Übernehmen speichert deinen Look.</p>
+    <div class="dialog-actions look-footer"><button type="button" id="lookReset">Standard</button><button type="button" data-close>Abbrechen</button><button type="submit" class="primary">Übernehmen</button></div>
+  </form></dialog>
+  <dialog id="colorDialog" aria-labelledby="colorTitle">
+    <form id="colorForm">
+      <div class="dialog-heading"><div><span class="sidebar-kicker">FARBE WÄHLEN</span><h2 id="colorTitle"></h2></div><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div>
+      <div id="colorPlane" tabindex="0" role="group" aria-label="Sättigung und Helligkeit" aria-describedby="colorPlaneHelp"><span id="colorCursor"></span></div>
+      <span id="colorPlaneHelp" class="sr-only">Pfeil links/rechts: Sättigung. Pfeil hoch/runter: Helligkeit.</span>
+      <label class="hue-label"><span class="sr-only">Farbton</span><input id="colorHue" type="range" min="0" max="359" step="1" aria-label="Farbton"></label>
+      <div class="color-comparison"><button type="button" id="colorBefore" title="Ursprüngliche Farbe wiederherstellen">Bisher</button><div id="colorAfter">Neu</div></div>
+      <label for="colorHex" class="look-section-label">HEX-FARBCODE</label>
+      <div class="color-code-row"><input id="colorHex" maxlength="7" spellcheck="false" autocomplete="off" aria-label="HEX-Farbcode" aria-describedby="colorMessage"><button type="button" id="colorCopy">Kopieren</button><button type="button" id="colorPaste">Einfügen</button></div>
+      <p id="colorMessage" class="dialog-note" role="status"></p>
+      <div class="color-palette-heading"><span class="look-section-label">GESPEICHERTE FARBEN</span><button type="button" id="colorRemember">＋ Farbe merken</button></div>
+      <div id="colorPalette" class="color-palette" aria-label="Gespeicherte Farben"></div>
+      <p class="dialog-note">Gemerkte Farben stehen in allen Look-Farbfeldern bereit. Übernehmen im Looks-Fenster speichert sie dauerhaft.</p>
+      <div class="dialog-actions color-footer"><button type="button" data-close>Abbrechen</button><button type="submit" id="colorApply" class="primary">Farbe übernehmen</button></div>
+    </form>
+  </dialog>
+  <input id="lookFile" type="file" accept=".json,application/json" hidden>
+  <dialog id="masterDataDialog" aria-labelledby="masterDataTitle">
+    <div class="dialog-heading"><div><h2 id="masterDataTitle">Stammdaten</h2><p class="dialog-note">Deine Kategorien, Kunden und Leistungen.</p></div><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div>
+    <nav class="master-tabs" aria-label="Stammdatenbereich">
+      <button type="button" data-master-kind="categories" aria-pressed="true">Kategorien</button>
+      <button type="button" data-master-kind="customers" aria-pressed="false">Kunden</button>
+      <button type="button" data-master-kind="projects" aria-pressed="false">Projekte</button>
+      <button type="button" data-master-kind="services" aria-pressed="false">Leistungen</button>
+    </nav>
+    <div class="master-toolbar"><label class="check-label"><input id="masterShowArchived" type="checkbox">Archivierte zeigen</label><button type="button" id="masterNew">＋ Neu</button></div>
+    <div class="master-layout">
+      <div id="masterList" class="master-list" aria-label="Stammdaten auswählen"></div>
+      <form id="masterForm">
+        <h3 id="masterFormTitle"></h3>
+        <label>Name<input id="masterName" required maxlength="200" autocomplete="off"></label>
+        <label id="masterGroupLabel">Bereich<select id="masterGroup"></select></label>
+        <label id="masterCustomerLabel">Kunde<select id="masterCustomer"></select></label>
+        <p id="masterGroupHint" class="dialog-note">Der Bereich bestimmt die Auswertung – auch für bestehende Einträge.</p>
+        <p id="masterProjectHint" class="dialog-note">Die Kundenzuordnung bleibt nach dem Anlegen fest.</p>
+        <div class="master-actions"><button type="button" id="masterArchive"></button><button type="submit" class="primary">Speichern</button></div>
+      </form>
+    </div>
+    <p id="masterError" class="form-error" role="alert"></p><p id="masterStatus" class="dialog-note" role="status"></p>
+    <p class="master-note">Archivierte bleiben in bestehenden Einträgen erhalten. Neue Einträge nutzen aktive Stammdaten.</p>
+  </dialog>
+  <dialog id="dayStartDialog" aria-labelledby="dayStartTitle"><form id="dayStartForm">
+    <div class="dialog-heading"><h2 id="dayStartTitle">Tag starten</h2><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div>
+    <label>Tag<select id="startDaySelect"></select></label><p id="startDayInfo" class="dialog-note"></p><p id="startDayMessage" class="dialog-note"></p><div id="dayStartReview"></div>
+    <div class="dialog-actions"><span></span><button id="startDayCommit" class="primary" type="submit">Tagesplan festhalten</button></div>
+  </form></dialog>
+  <dialog id="settingsDialog" class="dayform-settings" aria-labelledby="settingsTitle">
+    <div class="dialog-heading"><h2 id="settingsTitle">Planung & Daten</h2><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div>
+    <form id="planningForm"><h3>Dein Tageszeitraum</h3><div class="form-row"><label>Von<input type="time" id="planningStart" step="900" required></label><label>Bis<input type="time" id="planningEnd" step="900" required></label></div><p>Standardansicht des Kalenders. Einträge außerhalb erweitern sie automatisch. Das Planungsraster bleibt bei 15 Minuten.</p><button type="submit" class="primary">Zeitraum speichern</button><p id="planningStatus" role="status"></p></form>
+    <div class="settings-actions"><button id="settingsBackup" type="button">Backup speichern</button><button id="undoReset" type="button" hidden>Letztes Zurücksetzen rückgängig machen</button></div>
+    <form id="resetForm" class="reset-zone"><h3>Neu anfangen</h3><label>Umfang<select id="resetScope"><option value="week">Diese Woche leeren</option><option value="all">Alle Planungsdaten löschen</option></select></label><p id="resetInfo"></p>
+    <label>Zur Bestätigung RESET eingeben<input id="resetConfirm" autocomplete="off"></label><button type="submit" id="resetCommit" class="danger" disabled>Planungsdaten löschen</button></form><p id="settingsMessage" role="status"></p>
+  </dialog>
+  <dialog id="welcomeDialog" aria-labelledby="welcomeTitle"><form id="welcomeForm">
+    <img class="welcome-logo" src="tool/assets/dayform-mark.png" alt=""><h2 id="welcomeTitle">DAYRIVO</h2><p>Dein Tag. Dein Rhythmus.</p><p>Wähle eine Vorlage für deine erste Woche. Du kannst alles anpassen.</p>
+    <div id="welcomeChoices" class="welcome-presets"></div><input type="hidden" id="welcomePreset"><p id="welcomeError" class="form-error" role="alert"></p><button type="submit" class="primary">Mit dieser Woche starten</button>
+  </form></dialog>
+  <dialog id="titlesDialog" aria-labelledby="titlesHeading"><div class="dialog-heading"><h2 id="titlesHeading">Deine Titel</h2><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div><p class="dialog-note">Wenige Basics, deine eigenen Titel. Ausblenden entfernt nur den Vorschlag; bestehende Einträge bleiben erhalten.</p><div id="titleRecords"></div><label class="check-label"><input type="checkbox" id="showHiddenTitles">Ausgeblendete anzeigen</label><form id="titleRecordForm"><input type="hidden" id="titleRecordId"><div class="form-row"><label>Titel<input id="titleRecordName" maxlength="200" required></label><label>Kategorie<select id="titleRecordCategory"></select></label></div><p class="dialog-note">Änderungen gelten für alle verknüpften Einträge und Vorlagen. Festgehaltene Ausgangspläne bleiben unverändert.</p><div class="dialog-actions"><button id="newTitleRecord" type="button">Neuer Titel</button><button type="submit" class="primary">Speichern</button></div><p id="titleRecordStatus" role="status"></p></form></dialog>
+  <dialog id="highlightDialog" aria-labelledby="highlightHeading"><form id="highlightForm"><div class="dialog-heading"><h2 id="highlightHeading">Dein Tageshighlight</h2><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div><p class="dialog-note">Ein Eintrag pro Tag. Du kannst ihn jederzeit ändern.</p><input id="highlightDay" type="hidden"><label>Eintrag wählen<select id="highlightChoice"></select></label><p id="highlightError" class="form-error" role="alert"></p><div class="dialog-actions"><button type="button" data-close>Abbrechen</button><button type="submit" class="primary">Auswahl speichern</button></div></form></dialog>
+  <dialog id="weekReviewDialog" aria-labelledby="weekReviewHeading"><form id="weekReviewForm"><div class="dialog-heading"><h2 id="weekReviewHeading">Dein Wochenabschluss</h2><button type="button" class="icon-button" data-close aria-label="Schließen">×</button></div><p id="reviewWeek" class="dialog-note"></p><div id="weekReviewSummary"></div><label>Was hat dir gutgetan?<textarea id="reviewReflection" rows="2" maxlength="2000" placeholder="Optional · ein Gedanke reicht"></textarea></label><label>Was möchtest du nächste Woche anders planen?<textarea id="reviewNext" rows="2" maxlength="2000" placeholder="Optional · ein Gedanke reicht"></textarea></label><p id="reviewStatus" role="status"></p><div class="dialog-actions"><button type="button" data-close>Schließen</button><button id="weekReviewCommit" type="submit" class="primary">Woche festhalten</button></div></form></dialog>
+  <input id="restoreFile" type="file" accept=".json,application/json" hidden>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <noscript>Bitte JavaScript im Browser aktivieren, um den Wochenplan zu verwenden.</noscript>
+
+<dialog id="clockodoConnectionDialog"><div class="dialog-heading"><h2>Clockodo verbinden</h2><button type="button" data-close aria-label="Schließen">×</button></div>
+<p id="clockodoConnectionStatus" role="status"></p><p>Öffne die Windows-Anmeldung direkt hier. Nach der Anmeldung verbindet sich dieser Planer automatisch.</p>
+<button type="button" class="primary" id="clockodoStart">Clockodo starten</button>
+<details class="clockodo-help"><summary>Startet nicht? Einrichtung &amp; manuelle Verbindung</summary><p>Falls Windows fragt, Öffnen bestätigen. Beim ersten Start auf einem anderen PC einmal tool/clockodo/Direktstart-einrichten.cmd ausführen.</p><p>Alternativ DAYRIVO-Clockodo.cmd im selben Ordner starten, anmelden und Verbindung kopieren.</p>
+<form id="clockodoPairForm"><label>Verbindungscode<input id="clockodoPairCode" type="password" autocomplete="off" spellcheck="false" maxlength="70" placeholder="Aus dem lokalen Fenster einfügen"></label><div class="clockodo-actions"><button id="clockodoPairSubmit" type="submit">Verbinden</button></div></form>
+</details>
+<p class="dialog-note">Nur Kundenjobs. Zugangsdaten bleiben im lokalen Dienst; der Planer erhält keinen API-Key.</p><div class="clockodo-actions"><button type="button" id="clockodoDisconnect">Verbindung trennen</button><button type="button" data-close>Schließen</button></div></dialog>
+<dialog id="clockodoPickerDialog"><div class="dialog-heading"><h2>Kunde und Projekt</h2><button type="button" data-close aria-label="Schließen">×</button></div><div class="clockodo-picker">
+<label>Kunde<select id="clockodoCustomer"></select></label><div class="clockodo-pagination"><button type="button" id="clockodoCustomersPrevious" aria-label="Vorherige Seite">‹</button><small id="clockodoCustomersPage"></small><button type="button" id="clockodoCustomersNext" aria-label="Nächste Seite">›</button></div>
+<label>Projekt<select id="clockodoProject"></select></label><div class="clockodo-pagination"><button type="button" id="clockodoProjectsPrevious" aria-label="Vorherige Seite">‹</button><small id="clockodoProjectsPage"></small><button type="button" id="clockodoProjectsNext" aria-label="Nächste Seite">›</button></div>
+<p id="clockodoPickerStatus" role="status"></p><div class="clockodo-actions"><button type="button" data-close>Abbrechen</button><button type="button" class="primary" id="clockodoUse">Auswahl übernehmen</button></div></div></dialog>
+
+  <script src="tool/locales/en.js"></script>
+  <script src="tool/locales/dayform-en.js"></script>
+  <script src="tool/locales/refinements-en.js"></script>
+  <script src="tool/locales/rhythm-en.js"></script>
+  <script src="tool/locales/clockodo-en.js"></script>
+  <script src="tool/js/i18n.js"></script>
+  <script src="tool/js/language-picker.js"></script>
+  <script src="tool/js/master-data-model.js"></script>
+  <script src="tool/js/planner.js"></script>
+  <script src="tool/js/dayform-model.js"></script>
+  <script src="tool/js/refinements-model.js"></script>
+  <script src="tool/js/rhythm-model.js"></script>
+  <script src="tool/js/master-data.js"></script>
+  <script src="tool/js/entry-icons.js"></script>
+  <script src="tool/js/overview.js"></script>
+  <script src="tool/js/finance.js"></script>
+  <script src="tool/js/next-week.js"></script>
+  <script src="tool/js/reminders.js"></script>
+  <script src="tool/js/time-picker.js"></script>
+  <script src="tool/js/looks.js"></script>
+  <script src="tool/js/color-editor.js"></script>
+  <script src="tool/js/day-presets.js"></script>
+  <script src="tool/js/dayform.js"></script>
+  <script src="tool/js/refinements.js"></script>
+  <script src="tool/js/rhythm.js"></script>
+  <script src="tool/js/clockodo-model.js"></script>
+  <script src="tool/js/clockodo.js"></script>
+  <script src="tool/js/app.js?v=20260917-drag-time"></script>
+</body>
+</html>

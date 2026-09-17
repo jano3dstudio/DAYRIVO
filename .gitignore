@@ -1,0 +1,47 @@
+# Dependencies and local machine state
+node_modules/
+.npm-cache/
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.log
+*.pem
+*.key
+*.pfx
+*.p12
+
+# Personal exports and backups
+/tool/backup/*
+!/tool/backup/.gitkeep
+/tool/looks/*
+!/tool/looks/.gitkeep
+*-backup*.json
+js-office-week-*.json
+
+# Historical local prototypes
+/tool/archive/
+
+# Generated media; keep trailer source
+/tool/tests/artifacts/
+/tool/test-results/
+/tool/playwright-report/
+/tool/promo/media/
+/tool/promo/*.mp4
+/tool/promo/*.wav
+/tool/promo/*.jpg
+/tool/promo/*.png
+/tool/promo/*.webm
+/tool/dist/
+/tool/release/
+
+/.workspace-backups/
+
+# Local Clockodo user preference (never contains an API key)
+/tool/clockodo/local-settings.json

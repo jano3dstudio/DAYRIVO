@@ -1,0 +1,53 @@
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs');
+const {pathToFileURL}=require('node:url');
+(async()=>{
+ const browser=await chromium.launch({headless:true,channel:process.env.PLAYWRIGHT_CHANNEL||'msedge'});
+ try{
+  const page=await browser.newPage({viewport:{width:1560,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(pathToFileURL(path.resolve(__dirname,'../../index.html')).href);
+  assert.equal(await page.locator('#welcomeDialog').evaluate(e=>e.open),true);
+  await page.locator('#welcomeForm [type=submit]').click();
+  const stored=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('jsOfficeWeek_v1')));
+  assert.equal((await stored()).settings.needsWelcome,false);
+  await page.locator('#looksButton').click();await page.locator('#lookSelect').selectOption('df-rainbow');
+  await page.locator('#lookDay0').click();await page.locator('#colorHex').fill('#aabbcc');await page.locator('#colorApply').click();
+  await page.locator('#lookSelect').selectOption('df-arcade');await page.locator('#lookSelect').selectOption('');
+  assert.equal(await page.locator('#lookDay0').evaluate(e=>e.value),'#aabbcc');
+  await page.locator('#looksForm [type=submit]').click();await page.reload();
+  assert.equal((await stored()).settings.days.Montag.color,'#aabbcc');
+  await page.locator('#looksButton').click();await page.locator('#lookSelect').selectOption('df-acid');await page.locator('#lookSelect').selectOption('');
+  assert.equal(await page.locator('#lookDay0').evaluate(e=>e.value),'#aabbcc');await page.keyboard.press('Escape');
+  await page.locator('#capturePlanButton').click();await page.locator('#startDaySelect').selectOption('Montag');await page.locator('#startDayCommit').click();
+  const card=page.locator('[data-day=Montag] .item').first();
+  await card.locator('.item-main').click();assert.equal(await page.locator('#itemDialog').evaluate(e=>e.open),true);
+  const layout=await page.evaluate(()=>['itemDay','itemCategory','itemStartButton','itemEndButton'].map(id=>{const r=document.getElementById(id).getBoundingClientRect();return {x:r.x,w:r.width};}));
+  assert.ok(Math.abs(layout[0].x-layout[2].x)<1);assert.ok(Math.abs(layout[1].x-layout[3].x)<1);assert.ok(Math.abs(layout[1].w-layout[3].w)<1);
+  assert.ok((await page.locator('#itemTitleType').inputValue()).length);
+  await page.locator('#itemTitle').fill('Bewegung zusammen');await page.locator('#itemCategory').selectOption('Familie');await page.locator('#itemForm [type=submit]').click();
+  const d=await stored(),linked=d.weeks[d.selectedWeek].items.filter(i=>i.title==='Bewegung zusammen');assert.equal(linked.length,5);assert.ok(linked.every(i=>i.cat==='Familie'));
+  const out=path.join(__dirname,'artifacts');fs.mkdirSync(out,{recursive:true});
+  await card.locator('.item-main').click();await page.screenshot({path:path.join(out,'dayform-editor.png')});await page.keyboard.press('Escape');
+  await card.locator('.item-check').check();assert.equal((await stored()).weeks[d.selectedWeek].items[0].done,true);
+  const burst=await page.locator('.completion-confetti').evaluateAll(nodes=>nodes.map(n=>{const k=n.getAnimations()[0]?.effect.getKeyframes()[1];return k?.transform;}));
+  assert.equal(burst.length,24);assert.ok(burst.some(v=>/translate\(-/.test(v)));assert.ok(burst.some(v=>/px,\s*-/.test(v)));
+  await page.waitForTimeout(850);assert.equal(await page.locator('.completion-confetti').count(),0);
+  const footer=await page.locator('#dayFooters').boundingBox();await page.locator('.calendar').evaluate(e=>e.scrollTop=180);await page.waitForTimeout(100);
+  assert.equal((await page.locator('#dayFooters').boundingBox()).y,footer.y);
+  await page.screenshot({path:path.join(out,'dayform-desktop.png')});
+  await page.locator('#menuButton').click();await page.locator('#menuSettings').click();
+  assert.equal(await page.locator('#resetCommit').isDisabled(),true);await page.locator('#resetConfirm').fill('RESET');await page.locator('#resetCommit').click();assert.equal((await stored()).weeks[d.selectedWeek].items.length,0);
+  page.once('dialog',dialog=>dialog.accept());await page.locator('#undoReset').click();assert.equal((await stored()).weeks[d.selectedWeek].items.length,25);await page.keyboard.press('Escape');
+  await page.locator('[data-section=insights]').click();await page.locator('.plan-comparison summary').click();assert.equal(await page.locator('.day-review-grid').count(),1);
+  await page.locator('[data-section=week]').click();await page.setViewportSize({width:390,height:844});await page.waitForTimeout(150);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+  await page.screenshot({path:path.join(out,'dayform-mobile.png')});
+  await page.setViewportSize({width:3440,height:1440});await page.waitForTimeout(150);
+  const categories=await page.locator('[data-day=Montag] .item').evaluateAll(cards=>cards.map(c=>{const a=c.getBoundingClientRect(),b=c.querySelector('.item-category').getBoundingClientRect();return {center:(b.left+b.right)/2,cardCenter:(a.left+a.right)/2};}));
+  for(const c of categories)assert.ok(Math.abs(c.center-c.cardCenter)<1,'category centered on wide cards');
+  const symbols=await page.locator('.header-actions>button .menu-symbol,.menu-wrap>button .menu-symbol,#languageButton .menu-symbol').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect(),p=n.closest('button').getBoundingClientRect();return {w:r.width,h:r.height,color:getComputedStyle(n).color,delta:(r.top+r.bottom-p.top-p.bottom)/2};}));
+  assert.equal(symbols.length,4);for(const s of symbols){assert.equal(s.w,16);assert.equal(s.h,16);assert.equal(s.color,symbols[0].color);assert.ok(Math.abs(s.delta)<3);}
+  await page.screenshot({path:path.join(out,'dayform-ultrawide.png')});
+  assert.deepEqual(errors,[]);console.log('PASS: onboarding, custom look persistence, day plan, linked title/category, editor alignment, completion, fixed stripes, reset/recovery, mobile.');
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});

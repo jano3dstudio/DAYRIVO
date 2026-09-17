@@ -1,0 +1,75 @@
+<!doctype html><meta charset="utf-8"><style>*{box-sizing:border-box}html,body{margin:0;background:#090f12;overflow:hidden}canvas{display:block}</style><canvas id="c"></canvas><script>
+const c=document.querySelector('canvas'),g=c.getContext('2d'),images={};let meta,W,H,V;
+const mint='#3cff91',white='#eef4f2',muted='#9cada8',palette=['#ff718e','#ffc16b','#e9e575','#6ae5c0','#aa91ff'];
+const clamp=x=>Math.max(0,Math.min(1,x)),ease=x=>1-(1-clamp(x))**3;
+function rect(x,y,w,h,r=0){g.beginPath();g.roundRect(x,y,w,h,r);}
+function text(s,x,y,size=32,color=white,weight=500,align='left'){g.fillStyle=color;g.font=`${weight} ${size}px "Segoe UI",sans-serif`;g.textAlign=align;g.fillText(s,x,y);}
+function lines(a,x,y,size,gap,t,color=white){a.forEach((s,i)=>{const p=ease((t-i*.13)/.55);g.save();g.globalAlpha=p;g.translate(0,(1-p)*35);text(s,x,y+i*gap,size,i===a.length-1?color:white,650);g.restore();});}
+function backdrop(t){
+ g.fillStyle='#090f12';g.fillRect(0,0,W,H);
+ const glow=g.createRadialGradient(W*.8,H*.45,0,W*.8,H*.45,W*.75);glow.addColorStop(0,'#15372b');glow.addColorStop(1,'#090f12');g.fillStyle=glow;g.fillRect(0,0,W,H);
+ g.strokeStyle='#caffdf09';g.lineWidth=1;for(let x=-60;x<W+60;x+=90){g.beginPath();g.moveTo(x+t*3,0);g.lineTo(x+t*3,H);g.stroke();}
+ for(let i=0;i<5;i++){g.fillStyle=palette[i];g.globalAlpha=.15;rect(W-40-i*16,H*.14+Math.sin(t*.5+i)*12,4,H*.65,2);g.fill();}g.globalAlpha=1;
+}
+function brand(t){g.save();g.globalAlpha=ease(t/.5);const s=V?64:48;g.drawImage(images.logo,V?64:96,V?58:54,s,s);text('DAYRIVO',V?146:160,V?101:89,V?32:26,white,650);text('YOUR WEEK. YOUR WAY.',V?64:96,H-(V?70:54),V?20:17,muted,500);g.restore();}
+function panel(name,x,y,w,h,crop=null,scale=1,cursor=null,clickPhase=null){
+ const img=images[name];g.save();g.shadowColor='#0009';g.shadowBlur=60;g.shadowOffsetY=22;g.fillStyle='#121c20';rect(x,y,w,h,24);g.fill();g.shadowColor='transparent';rect(x,y,w,h,24);g.clip();
+ const q=crop||[0,0,img.width,img.height];g.translate(x+w/2,y+h/2);g.scale(scale,scale);g.drawImage(img,...q,-w/2,-h/2,w,h);
+ if(cursor){const px=(cursor.x-q[0])/q[2]*w-w/2,py=(cursor.y-q[1])/q[3]*h-h/2;g.fillStyle='#ffffff';g.strokeStyle='#07120e';g.lineWidth=2;g.beginPath();g.moveTo(px,py);g.lineTo(px+3,py+24);g.lineTo(px+9,py+17);g.lineTo(px+18,py+16);g.closePath();g.fill();g.stroke();}
+ if(clickPhase!==null&&clickPhase>=0&&clickPhase<1){
+  const px=(meta.done.x-q[0])/q[2]*w-w/2,py=(meta.done.y-q[1])/q[3]*h-h/2;
+  g.save();g.globalAlpha=1-clickPhase;g.strokeStyle=mint;g.lineWidth=4;g.beginPath();g.arc(px,py,16+clickPhase*62,0,Math.PI*2);g.stroke();
+  g.fillStyle=mint;g.globalAlpha=(1-clickPhase)*.3;g.beginPath();g.arc(px,py,12+clickPhase*25,0,Math.PI*2);g.fill();g.restore();
+ }
+ g.restore();g.strokeStyle='#b3ffd133';g.lineWidth=1.5;rect(x,y,w,h,24);g.stroke();
+}
+function chip(label,x,y,color=mint){g.fillStyle='#13261d';g.strokeStyle=color+'70';rect(x,y,V?300:235,48,24);g.fill();g.stroke();text(label,x+(V?150:117.5),y+32,19,color,550,'center');}
+function drawScene(index,t){
+ if(index===0){
+  if(V){lines(['Life first.','Work in flow.'],72,460,106,132,t-.2,mint);text('A little shape for a full life.',76,785,32,muted);}
+  else{lines(['Life first.','Work in flow.'],120,410,128,154,t-.2,mint);text('A little shape for a full life.',128,700,32,muted);}
+  const x=V?130:1180,y=V?1020:300,w=V?810:570;
+  for(let i=0;i<5;i++){const p=ease((t-.35-i*.1)/.8);g.save();g.globalAlpha=p;g.fillStyle=palette[i];rect(x+(1-p)*200,y+i*66,w*(.65+(i%3)*.12),44,10);g.fill();g.restore();}
+  text('Plan  /  Focus  /  Feel good',V?76:128,V?1600:810,V?26:22,mint);
+ }
+ if(index===1){
+  if(V){lines(['Make room','for your life.'],70,300,95,116,t,mint);text('Work and life. One clear view.',72,505,27,muted);panel('mobile',62,620,956,1150,[0,195,700,842],1+t*.004);}
+  else{lines(['Make room','for your life.'],100,365,79,96,t,mint);text('Work and life. One clear view.',104,600,24,muted);chip('One plan. Less juggling.',105,650);panel('week',660,175,1170,750,[238,85,1362,874],1+t*.005);}
+ }
+ if(index===2){
+  const f=clamp((t-.55)/2.3),i=Math.min(35,Math.floor(f*35)),name=t<.55?'week':t<2.85?'drag-'+i:'moved',cursor=t<2.85?meta.drag[i]:null;
+  if(V){lines(['Plans change.','You stay in flow.'],70,300,89,116,t,mint);text('Reschedule in seconds.',72,535,32,muted);panel(name,62,710,956,956,[455,115,920,920],1,cursor);}
+  else{lines(['Plans change.','You stay','in flow.'],100,340,76,92,t,mint);text('Reschedule in seconds.',104,685,28,muted);panel(name,770,155,1050,815,[430,110,1050,815],1,cursor);}
+ }
+ if(index===3){
+  const f=t-1.25,name=f<0?'before-done':f<1.05?'done-'+Math.min(17,Math.floor(f/1.05*18)):'done';
+  if(V){lines(['That','done feeling.'],70,305,105,128,t,mint);text('See what you actually get done.',72,555,31,muted);panel(name,62,750,956,880,[5,185,850,782],1,t>.7?meta.done:null,f/.7);}
+  else{lines(['That','done feeling.'],100,380,92,112,t,mint);text('See what you actually get done.',104,650,27,muted);panel(name,760,215,1070,710,[5,205,850,564],1,t>.7?meta.done:null,f/.7);}
+  if(f>0){const p=ease(f/.35);g.save();g.globalAlpha=p;chip('See your progress',V?72:105,V?1720:718);g.restore();}
+ }
+ if(index===4){
+  const names=['rainbow','arcade','glacier'],i=Math.min(2,Math.floor(t)),name=(V?'mobile-':'')+names[i];
+  if(V){lines(['Your week.','Your look.'],70,300,106,128,t,mint);panel(name,62,630,956,1120,[0,195,700,820]);}
+  else{lines(['Your week.','Your look.'],100,400,90,108,t,mint);text('Less clutter. More you.',104,640,28,muted);panel(name,690,175,1140,750,[238,85,1362,896]);}
+  for(let j=0;j<5;j++){g.fillStyle=[['#ff718e','#ffad5c','#e9e575','#63e6b5','#aa91ff'],['#ff47a6','#bd6aff','#48d9ff','#b5ff46','#ffca4b'],['#75aaff','#6dd4ed','#70ebca','#91bbeb','#bba2ee']][i][j];g.beginPath();g.arc((V?98:122)+j*57,V?550:718,16,0,Math.PI*2);g.fill();}
+ }
+ if(index===5){
+  const p=ease(t/.7),cx=W/2;g.save();g.globalAlpha=p;g.translate(0,(1-p)*40);
+  const s=V?195:160;g.drawImage(images.logo,cx-s/2,V?370:200,s,s);
+  text('DAYRIVO',cx,V?730:485,V?129:138,white,650,'center');
+  text('Your day. Your rhythm.',cx,V?865:610,V?53:53,mint,450,'center');
+  text('For freelancers. For your whole life.',cx,V?1005:712,V?32:30,muted,400,'center');
+  g.fillStyle=mint;rect(cx-55,V?1120:775,110,4,2);g.fill();
+  text('Created by Jona Fynn Schlegelmilch',cx,V?1550:924,V?25:20,muted,400,'center');g.restore();
+ }
+}
+window.prepare=async(portrait,metadata)=>{V=portrait;W=V?1080:1920;H=V?1920:1080;c.width=W;c.height=H;meta=metadata;
+ const files=['week','moved','before-done','done','rainbow','arcade','glacier','mobile','mobile-rainbow','mobile-arcade','mobile-glacier',...Array.from({length:36},(_,i)=>'drag-'+i),...Array.from({length:18},(_,i)=>'done-'+i)];
+ await Promise.all([...files,'logo'].map(key=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[key]=img;resolve();};img.onerror=reject;img.src=key==='logo'?'../assets/dayform-mark.png':'media/'+key+'.jpg';})));await document.fonts.ready;
+};
+window.renderFrame=time=>{
+ backdrop(time);const cuts=[0,3,7,11,15,18,22];let i=cuts.findIndex((v,j)=>j<6&&time>=v&&time<cuts[j+1]);if(i<0)i=5;
+ const local=time-cuts[i];g.save();g.globalAlpha=ease(local/.2);drawScene(i,local);g.restore();brand(time);
+ if(time>21.5){g.fillStyle=`rgba(9,15,18,${clamp((time-21.5)/.5)})`;g.fillRect(0,0,W,H);}
+};
+</script>

@@ -1,0 +1,61 @@
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs');
+const {pathToFileURL}=require('node:url'),P=require('../js/planner.js');
+(async()=>{
+ const browser=await chromium.launch({headless:true,channel:'msedge'});
+ try{
+  const page=await browser.newPage({viewport:{width:1560,height:1000}}),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(pathToFileURL(path.resolve(__dirname,'../../index.html')).href);
+    if(await page.locator('#welcomeDialog').evaluate(e=>e.open))await page.locator('#welcomeForm [type=submit]').click();
+  const stored=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('jsOfficeWeek_v1')));
+  const original=await stored();
+  assert.deepEqual(await page.locator('.header-actions').evaluate(el=>[...el.children].map(c=>c.id||c.className)),['nextWeekButton','menu-wrap','looksButton','backupButton','language-picker','saveStatus']);
+  await page.locator('#looksButton').click();await page.locator('#lookAccent').click();
+  await page.locator('#colorHex').fill('broken');
+  assert.ok(await page.locator('#colorApply').isDisabled());assert.ok(await page.locator('#colorRemember').isDisabled());
+  await page.locator('#colorHex').fill('#1256af');await page.locator('#colorRemember').click();
+  await page.keyboard.press('Escape');assert.ok(await page.locator('#looksDialog').isVisible());
+  assert.equal(await page.locator('#lookAccent').evaluate(el=>el.value),'#3cff91');
+  await page.locator('#lookAccent').click();assert.equal(await page.locator('#colorPalette button:enabled').count(),0);
+  await page.locator('#colorHex').fill('#1256af');await page.locator('#colorRemember').click();await page.locator('#colorApply').click();
+  await page.locator('#lookDay1').click();await page.locator('#colorPalette button:enabled').first().click();
+  assert.equal(await page.locator('#colorHex').inputValue(),'#1256AF');
+  await page.locator('#colorBefore').click();assert.equal(await page.locator('#colorHex').inputValue(),original.settings.days.Dienstag.color.toUpperCase());
+  // Exercise the plane by pointer and keyboard; hue and code remain synchronized.
+  await page.locator('#colorPlane').click({position:{x:100,y:80}});
+  const pointerColor=await page.locator('#colorHex').inputValue();
+  await page.locator('#colorPlane').press('ArrowRight');assert.notEqual(await page.locator('#colorHex').inputValue(),pointerColor);
+  await page.locator('#colorHue').fill('240');await page.locator('#colorHex').fill('#1256af');
+  await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async value=>{window.copiedColor=value;},readText:async()=>'#abcdef'}}));
+  await page.locator('#colorCopy').click();assert.equal(await page.evaluate(()=>window.copiedColor),'#1256AF');
+  await page.locator('#colorPaste').click();assert.equal(await page.locator('#colorHex').inputValue(),'#ABCDEF');
+  await page.locator('#colorApply').click();assert.deepEqual(await stored(),original);
+  await page.keyboard.press('Escape');assert.deepEqual(await stored(),original);
+  // Commit the outer dialog, reload, then validate palette backup roundtrip.
+  await page.locator('#looksButton').click();await page.locator('#lookAccent').click();
+  await page.locator('#colorHex').fill('#1256af');await page.locator('#colorRemember').click();await page.locator('#colorApply').click();
+  await page.locator('#looksForm [type=submit]').click();await page.reload();
+  const saved=await stored();assert.deepEqual(saved.settings.savedColors,['#1256af']);assert.deepEqual(saved.weeks,original.weeks);
+  assert.deepEqual(P.parseBackup({app:'JS OFFICE WEEK',data:saved}),saved);
+  const bad=P.clone(saved);bad.settings.savedColors=['url(evil)'];assert.throws(()=>P.validateData(bad),/Farben/);
+  await page.locator('#looksButton').click();await page.locator('#lookReset').click();await page.keyboard.press('Escape');assert.deepEqual(await stored(),saved);
+  await page.locator('#languageButton').click();await page.getByRole('menuitemradio',{name:'English'}).click();
+  await page.locator('#looksButton').click();assert.equal(await page.locator('#lookDay0').getAttribute('aria-label'),'Monday color');
+  assert.match(await page.evaluate(()=>document.documentElement.style.getPropertyValue('--accent-readable')),/color-mix/);
+  await page.locator('#lookReset').click();
+  const out=path.join(__dirname,'artifacts');fs.mkdirSync(out,{recursive:true});
+  await page.screenshot({animations:'disabled',path:path.join(out,'studio-looks-desktop.png')});
+  await page.locator('#lookAccent').click();assert.equal(await page.locator('#colorApply').textContent(),'Use color');
+  await page.screenshot({animations:'disabled',path:path.join(out,'studio-color-desktop.png')});
+  await page.setViewportSize({width:390,height:844});
+  await page.screenshot({animations:'disabled',path:path.join(out,'studio-color-mobile.png')});
+  const box=await page.locator('#colorDialog').boundingBox();assert.ok(box.x>=0&&box.x+box.width<=390);
+  assert.ok(await page.locator('#colorDialog').evaluate(el=>el.scrollWidth<=el.clientWidth));
+  await page.keyboard.press('Escape');await page.screenshot({animations:'disabled',path:path.join(out,'studio-looks-mobile.png')});
+  await page.keyboard.press('Escape');await page.locator('#menuButton').click();
+  const menu=await page.locator('#menu').boundingBox();assert.ok(menu.x>=0&&menu.x+menu.width<=390);
+  assert.deepEqual(errors,[]);
+  console.log('PASS: header order, nested cancel, invalid HEX, shared palette, HSV pointer/keyboard, clipboard, save/reload/backup, defaults cancel, EN, mobile dialogs/options.');
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});

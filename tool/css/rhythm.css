@@ -1,0 +1,24 @@
+.day-highlight{display:block;width:100%;text-align:left;padding:10px;margin:12px 0;border:1px solid var(--line);background:transparent}
+.day-highlight>span{display:block;font-size:8px;letter-spacing:.09em;color:var(--accent)}
+.day-highlight b{display:block;font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:5px 0}
+.day-highlight small{display:block;font-size:9px;font-weight:400;color:var(--muted)}
+.day-highlight.achieved{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 5%,transparent)}
+.rhythm-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;margin:14px 0 10px}
+.rhythm-strip button{padding:4px 0;border-color:transparent;background:none;min-width:0;color:var(--accent)}
+.rhythm-strip button[aria-pressed=true]{border-color:var(--line);background:#ffffff04}
+.rhythm-strip button>span{display:block;font-size:8px;color:var(--muted)}
+.rhythm-sun{display:block;width:100%;max-width:48px;margin:auto;aspect-ratio:1;color:var(--accent)}
+.sun-ray,.sun-core{opacity:.15}.sun-ray.lit,.sun-core.lit{opacity:1}.sun-star{fill:currentColor;stroke:none}
+.week-review-button{width:100%;font-size:10px;padding:8px;background:none}
+.item.is-highlight{box-shadow:inset 2px 0 var(--accent)}
+.item.is-highlight .item-title:after{content:' ✦';color:var(--accent);font-size:12px}
+#weekReviewDialog{width:min(650px,calc(100% - 28px))}
+.review-suns{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:22px 0}
+.review-suns>div{text-align:center}.review-suns b{font-size:11px;display:block;margin:9px 0 3px}.review-suns small{font-size:9px;color:var(--muted);display:block}
+.review-suns .rhythm-sun{max-width:58px}
+.review-numbers{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-block:1px solid var(--line);padding:14px 0;margin-bottom:20px}
+.review-numbers b{font-size:28px;color:var(--accent);font-weight:500;display:block}.review-numbers span{font-size:11px;color:var(--muted)}
+.review-areas{display:flex;gap:8px;flex-wrap:wrap}.review-areas>span{border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:11px}.review-areas b{margin-left:8px;color:var(--accent)}
+#weekReviewSummary .dialog-note{margin:12px 0 20px}#reviewStatus{font-size:12px;color:var(--muted)}
+.item-highlight-label{font-size:12px;color:var(--accent)}
+@media(max-width:500px){.review-suns{gap:3px}.review-suns b{font-size:9px}.review-suns small{font-size:8px}}

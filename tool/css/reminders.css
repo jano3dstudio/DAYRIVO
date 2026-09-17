@@ -1,0 +1,28 @@
+.day-head{display:flex;align-items:center;gap:10px;border-style:solid;container-type:inline-size}
+.day-meta{flex:1 1 45%;min-width:0;text-align:left;background:transparent;border:0;padding:0;border-radius:3px}
+.day-meta:hover{background:transparent;color:var(--text)}
+.day-meta .day-name-row{white-space:nowrap}
+.mini-reminders{flex:1 1 50%;max-width:230px;min-width:0;display:flex;align-items:center;gap:5px}
+.reminder-preview{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.mini-reminder{display:flex;align-items:center;gap:5px;min-width:0;height:17px}
+.mini-reminder input,.reminder-row input{accent-color:var(--day-color,var(--accent));width:12px;height:12px;flex:none;margin:0;cursor:pointer}
+.mini-reminder button{font-size:10px;font-weight:400;color:#a9bac1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0;border:0;background:none;min-width:0;text-align:left}
+.mini-reminder.done button,.reminder-row.done .reminder-text{text-decoration:line-through;color:#617780}
+.reminder-head-actions{display:flex;flex-direction:column;gap:2px}
+.reminder-add,.reminder-count{padding:0;width:21px;height:19px;border:0;background:transparent;color:#789098;line-height:18px}
+.reminder-add{font-size:16px;color:var(--day-color)}
+.reminder-count{font-size:10px}
+.reminder-head-actions button:hover{background:#ffffff0a;color:var(--day-color)}
+.reminder-hint{font-size:10px;font-weight:400;color:#68818c;border:0;background:none;padding:0;text-align:right}
+@container(max-width:235px){.mini-reminders{flex:0 0 auto}.reminder-preview{display:none}.day-meta{flex:1}.reminder-head-actions{flex-direction:row;align-items:center}.reminder-count{order:-1}}
+.reminder-entry{display:flex;gap:8px;align-items:center;margin-top:8px}
+.reminder-entry input{min-width:0;flex:1;margin:0}
+.reminder-entry button{flex:none}
+#reminderCancelEdit{font-size:11px;margin-top:8px}
+.reminder-list{display:flex;flex-direction:column;max-height:40vh;overflow:auto;margin:12px 0}
+.reminder-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.reminder-row input{width:15px;height:15px}
+.reminder-text{min-width:0;flex:1;overflow-wrap:anywhere;text-align:left;font-size:13px;font-weight:400;background:none;border:0;padding:4px 0;color:#c0cdd3}
+.reminder-delete{border:0;background:none;color:#7d949f;padding:3px 8px;font-size:18px}
+.reminder-delete:hover{color:#ffa29a}
+@media(max-width:760px){.day-head.mobile-show{display:flex}.day-head:not(.mobile-show){display:none}.reminder-entry button{padding:10px;font-size:11px}}

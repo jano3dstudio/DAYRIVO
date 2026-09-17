@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1110">
+  <meta name="description" content="DAYRIVO is a local-first weekly planner for freelancers. Make room for life, stay flexible, and see what you actually finish.">
+  <title>DAYRIVO — Your day. Your rhythm.</title>
+  <link rel="icon" href="../assets/dayform-mark.png">
+  <link rel="stylesheet" href="landing.css">
+  <script src="landing.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-t="skip">Skip to content</a>
+  <header class="site-header wrap">
+    <a class="wordmark" href="#top" aria-label="DAYRIVO home"><img src="../assets/dayform-mark.png" width="34" height="34" alt=""><span>DAYRIVO<span class="brand-dot">.</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="#why" data-t="navWhy">Why DAYRIVO</a>
+      <a href="#rhythm" data-t="navHow">Your rhythm</a>
+      <a href="#questions" data-t="navFaq">Good to know</a>
+    </nav>
+    <div class="nav-actions"><button class="language" id="language" aria-label="Switch to German">EN <span>↔</span> DE</button><a class="button button-small button-outline" href="../../index.html"><span data-t="open">Open planner</span><span aria-hidden="true">↗</span></a></div>
+  </header>
+  <main id="main">
+    <section class="hero wrap" id="top">
+      <div class="eyebrow"><span class="live-dot"></span><span data-t="eyebrow">A little structure. A lot more life.</span></div>
+      <div class="hero-grid">
+        <h1><span data-t="heroFirst">Life first.</span><span class="serif accent" data-t="heroSecond">Work in flow.</span></h1>
+        <div class="hero-copy">
+          <p data-t="heroText">You’re more than your to-do list. Make room for focused work, fresh air, and everything that makes a week yours.</p>
+          <div class="hero-actions"><a class="button button-primary" href="../../index.html"><span data-t="cta">Find your rhythm</span><span aria-hidden="true">↗</span></a><button class="film-button" data-film><span class="play-icon" aria-hidden="true">▶</span><span data-t="film">Watch the film</span><small>00:22</small></button></div>
+          <p class="micro"><span class="live-dot"></span><span data-t="localNote">No account. Your plans stay in your browser.</span></p>
+        </div>
+      </div>
+      <div class="product-stage" id="looks">
+        <div class="preview-top"><div class="preview-title"><span class="live-dot"></span><span data-t="previewTitle">A week with room for you.</span></div><div class="looks-controls" role="group" aria-label="Preview color themes"><button class="swatch rainbow selected" data-look="rainbow" aria-label="Rainbow" aria-pressed="true"></button><button class="swatch arcade" data-look="arcade" aria-label="Neon Arcade" aria-pressed="false"></button><button class="swatch glacier" data-look="glacier" aria-label="Glacier" aria-pressed="false"></button><span id="lookName">Rainbow</span></div></div>
+        <div class="screenshot-wrap"><picture><source id="mobilePreview" media="(max-width: 520px)" srcset="assets/week-rainbow-mobile.jpg"><img id="weekPreview" src="assets/week-rainbow.jpg" alt="DAYRIVO planner with colored days, work, family time and exercise" width="1600" height="1000" fetchpriority="high"></picture></div>
+        <div class="preview-bottom"><span data-t="previewNote">The real planner. An example week.</span><span><span data-t="tryLook">Make it yours. Try a look</span> <span class="accent">↑</span></span></div>
+      </div>
+      <div class="feature-strip"><span><i>↔</i><span data-t="stripOne">Drag. Drop. Carry on.</span></span><span><i>◷</i><span data-t="stripTwo">A plan that stays flexible.</span></span><span><i>✓</i><span data-t="stripThree">Small wins. Real progress.</span></span><span><i>⌂</i><span data-t="stripFour">Local by nature.</span></span></div>
+    </section>
+
+    <section class="benefits wrap section" id="why">
+      <div class="section-heading"><p class="eyebrow" data-t="whyEye">FOR PEOPLE WHO WEAR ALL THE HATS</p><h2><span data-t="whyTitle">A full life.</span><br><span class="serif muted" data-t="whySecond">Not just a full calendar.</span></h2><p class="section-intro" data-t="whyText">Client work. The school run. That idea you can’t stop thinking about. There’s room for all of it.</p></div>
+      <div class="benefit-grid">
+        <article class="benefit"><span class="number">01 /</span><div class="mini-agenda" aria-hidden="true"><div class="mini-block mint"><span>09:00</span><strong data-t="demoFocus">Deep work</strong><i>↗</i></div><div class="mini-block peach"><span>12:00</span><strong data-t="demoAir">A little fresh air</strong><i>☀</i></div><div class="mini-block lilac"><span>15:00</span><strong data-t="demoLife">Time for your people</strong><i>♡</i></div></div><h3 data-t="benefitOne">Life gets a time slot, too.</h3><p data-t="benefitOneText">See work and personal time together, with clear categories that keep them distinct. Your priorities set the order.</p></article>
+        <article class="benefit"><span class="number">02 /</span><div class="move-demo" aria-hidden="true"><div class="move-days"><span data-t="tue">TUE</span><span data-t="thu">THU</span></div><div class="move-grid"><div class="ghost-block"></div><span class="move-arrow">⤴</span><div class="moved-block"><span>10:00 – 11:00</span><strong data-t="demoIdea">Make something good.</strong><span class="cursor">↖</span></div></div><span class="move-caption" data-t="moveCaption">Same idea. A better moment.</span></div><h3 data-t="benefitTwo">Move the plan. Keep the flow.</h3><p data-t="benefitTwoText">Move an entry to another day, stretch a time block, or start from a preset. Plans can change without starting over.</p></article>
+        <article class="benefit win-benefit"><span class="number">03 /</span><div class="win-demo"><div class="win-card"><div><span class="win-time">14:00 – 15:00</span><strong data-t="demoFinish">The final little details.</strong><span class="win-status" id="winStatus" data-t="winHint">Go on. Check it off.</span></div><button id="winButton" class="win-button" aria-label="Mark demo task complete" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></button></div><div id="confetti" aria-hidden="true"></div><span class="demo-label" data-t="interactive">A little win, just for the feeling.</span></div><h3 data-t="benefitThree">Feel good about what got done.</h3><p data-t="benefitThreeText">Capture your plan in the morning. Check things off as you go. See your progress against the plan you actually started with.</p></article>
+      </div>
+    </section>
+
+    <section class="rhythm-section" id="rhythm"><div class="wrap rhythm-grid">
+      <div class="rhythm-copy"><p class="eyebrow" data-t="rhythmEye">LESS SETTING UP. MORE SHOWING UP.</p><h2><span data-t="rhythmTitle">Your week.</span><br><span class="serif accent" data-t="rhythmSecond">On your terms.</span></h2><p data-t="rhythmText">Some weeks need focus. Some need breathing room. Save the routines that work for you, and give each week its own shape.</p><a href="../../index.html" class="text-link"><span data-t="rhythmLink">Build a week that fits</span> <span aria-hidden="true">↗</span></a></div>
+      <div class="rhythm-list"><article><span class="line-icon">▦</span><div><h3 data-t="routineTitle">Start with your rhythm.</h3><p data-t="routineText">Focus, balance, a deadline week, or time off. Choose a starting point and make it your own.</p></div><span class="list-number">01</span></article><article><span class="line-icon">◷</span><div><h3 data-t="timeTitle">Know where your time went.</h3><p data-t="timeText">Log actual work time by hand. Keep estimates, completed tasks and earnings clearly separate.</p></div><span class="list-number">02</span></article><article><span class="line-icon">◌</span><div><h3 data-t="lookTitle">Make it feel like you.</h3><p data-t="lookText">Your colors, categories, icons and saved looks. A calm workspace with a little personality.</p></div><span class="list-number">03</span></article></div>
+    </div></section>
+
+    <section class="film-section wrap section"><button class="film-poster" data-film aria-label="Play the 22-second DAYRIVO film"><div class="film-heading"><span class="eyebrow" data-t="filmEye">22 SECONDS. A DIFFERENT KIND OF WEEK.</span><strong><span data-t="filmFirst">Less juggling.</span><br><span class="serif" data-t="filmSecond">More living.</span></strong><span class="film-watch"><span class="play-icon">▶</span><span data-t="film">Watch the film</span><small data-t="filmLanguage">English · 00:22</small></span></div><div class="film-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div></button></section>
+
+    <section class="faq-section wrap section" id="questions"><div><p class="eyebrow" data-t="faqEye">A FEW THINGS, UP FRONT.</p><h2 data-t="faqTitle">Good to know.</h2><p class="muted" data-t="faqIntro">Simple tools deserve straight answers.</p></div><div class="faqs">
+      <details><summary data-t="q1">Do I need an account?</summary><p data-t="a1">No. The current planner runs in your browser with no account or app server. Open it and choose a template to get started.</p></details>
+      <details><summary data-t="q2">Where do my plans live?</summary><p data-t="a2">In this browser, on this device. There is no automatic cloud sync. Use the app’s backup and restore tools to keep a separate copy. Clearing browser data can remove your plans.</p></details>
+      <details><summary data-t="q3">Is it just for work?</summary><p data-t="a3">Your whole week belongs here: work, family, exercise, breaks and personal projects. Categories keep them separate in your overview.</p></details>
+      <details><summary data-t="q4">Does it track my time automatically?</summary><p data-t="a4">No. You enter actual work time manually. Checking off a task does not turn its planned duration into recorded work time. Clockodo integration is planned, but is not connected yet.</p></details>
+      <details><summary data-t="q5">Can I use it on my phone?</summary><p data-t="a5">The layout adapts to smaller screens, with one day at a time. Desktop is the main workspace. Your phone and computer keep separate plans unless you transfer a backup.</p></details>
+    </div></section>
+    <section class="final-cta wrap"><span class="eyebrow" data-t="finalEye">MAKE A LITTLE ROOM FOR YOU.</span><h2><span data-t="finalFirst">Your day.</span> <span class="serif accent" data-t="finalSecond">Your rhythm.</span></h2><a class="button button-primary" href="../../index.html"><span data-t="cta">Find your rhythm</span><span aria-hidden="true">↗</span></a><p class="micro" data-t="finalNote">Choose a preset. Make it yours. Take it one day at a time.</p></section>
+  </main>
+  <footer class="site-footer wrap"><a class="wordmark" href="#top"><span>DAYRIVO<span class="brand-dot">.</span></span></a><span>Created by <a href="https://www.linkedin.com/in/jonaschlegelmilch/" target="_blank" rel="noopener noreferrer">Jona Fynn Schlegelmilch ↗</a></span><span data-t="footer">Local-first. Life-first.</span></footer>
+  <dialog id="filmDialog" aria-labelledby="filmTitle"><div class="dialog-heading"><span id="filmTitle">DAYRIVO · Your day. Your rhythm.</span><button id="closeFilm" aria-label="Close film">×</button></div><video id="filmVideo" controls playsinline preload="none"><source src="assets/dayrivo-film.mp4" type="video/mp4"><a href="assets/dayrivo-film.mp4">Open the film</a></video><p class="video-error" id="videoError" hidden data-t="videoError">The film could not be loaded. Please check that the video file is included with this page.</p></dialog>
+</body>
+</html>

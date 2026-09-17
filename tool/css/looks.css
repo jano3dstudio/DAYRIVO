@@ -1,0 +1,73 @@
+/* Appearance is shared by the workspace, dialogs and controls. */
+:root{--frame-style:dashed;--accent-soft:color-mix(in srgb,var(--accent) 7%,transparent);--accent-line:color-mix(in srgb,var(--accent) 25%,transparent)}
+body{padding:9px}
+.shell{width:calc(100% - 14px)}
+body::before{content:"";position:fixed;inset:7px;border:1px var(--frame-style) var(--accent-line);border-radius:12px;pointer-events:none;z-index:100}
+dialog{border-style:var(--frame-style);border-color:color-mix(in srgb,var(--accent) 30%,#ffffff20)}
+.section-nav button[aria-pressed="true"]{background:var(--accent-soft)}
+.capture-plan:not(:disabled){border-color:var(--accent-line);background:color-mix(in srgb,var(--accent) 3%,transparent)}
+.month-day:hover{box-shadow:inset 0 0 0 1px var(--accent-line)}
+.time-options{background:color-mix(in srgb,var(--accent) 4%,#182024);border-color:var(--accent-line);scrollbar-color:color-mix(in srgb,var(--accent) 35%,#253137) #182024}
+.month-events .checked{color:color-mix(in srgb,var(--accent) 55%,#a5b5be)}
+#looksButton{display:flex;align-items:center;gap:8px}
+#looksButton span{font-size:17px;line-height:12px;color:var(--accent)}
+.header-actions .menu{left:0;right:auto}
+@media(max-width:1400px){.save-status{display:none}}
+@media(min-width:761px) and (max-width:1100px){#nextWeekButton{display:none}}
+@media(max-width:760px){
+  .header-inner{grid-template-columns:minmax(0,1fr);min-height:122px;gap:6px}
+  .studio-logo{grid-column:1;grid-row:1;justify-self:center;width:96px}
+  .brand{grid-column:1;grid-row:2;justify-self:center}
+  .header-actions{grid-column:1;grid-row:3;justify-self:stretch;justify-content:flex-end}
+}
+#looksDialog{width:min(680px,calc(100% - 28px));padding:30px;background:#151a1d}
+#looksTitle{font-family:Bahnschrift,"Segoe UI",sans-serif;font-size:38px;font-weight:300;letter-spacing:-.04em;text-transform:uppercase;margin:9px 0 0}
+#looksDialog .sidebar-kicker{font-size:10px;letter-spacing:.12em}
+#looksDialog .dialog-heading{margin-bottom:24px}
+#looksDialog label{font-size:12px;letter-spacing:.025em}
+#looksDialog select{height:42px;text-align:center;background-color:#1d2326;border-color:#ffffff12}
+#looksDialog button{border-radius:8px}
+.look-preview{padding:14px;border:1px var(--frame-style) var(--accent-line);border-radius:10px;background:#0d1214;margin:18px 0 24px}
+.look-preview-heading{display:flex;align-items:center;justify-content:space-between;font-size:9px;letter-spacing:.1em;color:#b7c4ca;margin-bottom:13px}
+.look-preview-badge{color:var(--accent-readable,var(--accent));background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:5px;padding:5px 13px}
+.look-preview-week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+.look-preview-day{color:var(--swatch)}
+.look-preview-day strong{display:block;text-align:center;border:2px solid var(--swatch);border-radius:5px;font-size:10px;padding:6px 2px;margin-bottom:7px}
+.look-preview-entry{position:relative;display:block;height:38px;padding:8px 7px 7px 21px;border:1px solid color-mix(in srgb,var(--swatch) 24%,transparent);background:color-mix(in srgb,var(--swatch) 12%,#151a1d);border-radius:4px;margin-bottom:5px}
+.look-preview-entry i{position:absolute;width:7px;height:7px;left:7px;top:9px;border:1px solid currentColor;border-radius:2px}
+.look-preview-entry b,.look-preview-entry em{display:block;height:3px;background:currentColor;opacity:.6;border-radius:2px;width:75%;margin:3px 0 5px}
+.look-preview-entry em{width:45%;opacity:.3}
+.look-preview-entry.short{height:24px;padding-top:5px}
+.look-preview-entry.short i{top:8px}
+.look-preview-end{height:3px;background:var(--swatch);border-radius:2px;margin-top:8px}
+.look-controls{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.look-controls label{margin-bottom:18px}
+.look-section-label{display:block;color:#91a1aa;font-size:11px;letter-spacing:.05em;margin:0 0 10px}
+.look-days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:20px}
+.look-days label{text-align:center;gap:8px;margin:0}
+#looksDialog .color-field{width:100%;height:42px;padding:0 5px;border:1px solid #ffffff15;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:0;transition:none}
+.color-field:hover{box-shadow:inset 0 0 0 2px #ffffff60}
+.look-management{border-block:1px solid var(--line);padding:14px 0;margin-top:7px}
+.look-management summary{font-size:12px;color:var(--muted);cursor:pointer}
+.look-management[open] summary{margin-bottom:16px}
+.look-actions{display:flex;flex-wrap:wrap;gap:7px}
+.look-actions button{font-size:11px;padding:7px 9px}
+.look-files{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+#lookMessage{overflow-wrap:anywhere;margin-bottom:0}
+#lookMessage:empty{display:none}
+#looksDialog .dialog-note{font-size:11px;line-height:1.5;color:#91a1aa}
+#looksDialog .look-footer{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:10px;margin-top:20px}
+.look-footer button{width:100%;min-height:42px}
+#looksDialog .primary,#colorDialog .primary{color:var(--accent-readable,var(--accent));background:color-mix(in srgb,var(--accent) 12%,#151a1d);border:1px solid var(--accent-line)}
+#looksDialog .primary:hover,#colorDialog .primary:hover{background:color-mix(in srgb,var(--accent) 22%,#151a1d)}
+@media(max-width:560px){#looksDialog{padding:20px}#looksTitle{font-size:32px}#looksDialog .dialog-heading{margin-bottom:16px}.look-days{grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:14px}.look-preview-week{gap:5px}.look-preview{padding:10px;margin:14px 0 16px}.look-preview-entry{padding-left:16px}.look-preview-entry i{left:5px}#looksDialog .look-footer{gap:6px}#looksDialog .look-footer button{padding:8px}.look-controls{gap:12px}.look-controls label{margin-bottom:12px}#looksDialog .color-field{height:38px}}
+.day-preset-preview{max-height:180px;overflow:auto;padding:8px 11px;border:1px solid var(--line);border-radius:7px;background:#10171a;margin-bottom:15px;scrollbar-width:thin}
+.day-preset-preview>div{display:flex;gap:12px;padding:5px 0;font-size:11px;align-items:baseline}
+.day-preset-preview span{white-space:nowrap;color:var(--muted);font-variant-numeric:tabular-nums}
+.day-preset-preview strong{font-weight:500;overflow-wrap:anywhere;min-width:0}
+.day-preset-preview p{font-size:12px;color:var(--muted)}
+.day-preset-manage{border-block:1px solid var(--line);padding:12px 0;margin-bottom:15px}
+.day-preset-manage summary{cursor:pointer;font-size:12px;color:var(--muted)}
+.day-preset-manage[open] summary{margin-bottom:12px}
+#dayPresetMessage:empty{display:none}
+@media(max-width:760px){body{padding:5px}.shell{width:calc(100% - 10px)}body::before{inset:3px;border-radius:9px}.header-actions{gap:4px}.header-actions>button{padding:5px}#looksButton{gap:4px}.look-days{gap:7px}}

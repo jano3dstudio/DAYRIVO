@@ -1,0 +1,55 @@
+.header-inner{display:flex;justify-content:space-between;position:relative;gap:20px}
+.brand{display:flex;align-items:center;gap:8px;flex:none;min-width:0;padding-left:10px}
+.brand .studio-logo.dayform-logo{position:static;transform:none;width:26px;height:26px;object-fit:contain;margin:0}
+.brand h1{margin:0;font-size:15px;white-space:nowrap}
+.sidebar-label{padding-left:44px}
+.header-context{flex:1;min-width:120px;text-align:center;color:var(--muted);font-size:11px}
+.next-focus{max-width:320px;width:100%;border:0;background:none;padding:6px 10px;text-align:left;margin:auto;display:block}
+.next-focus span{display:block;font-size:8px;letter-spacing:.1em;color:var(--muted)}
+.next-focus b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:500}
+.next-focus:hover{background:var(--accent-soft)}
+.header-actions{flex:none;margin-left:auto}
+.planning-shortcut{border:0;background:none;color:var(--muted);font-size:10px;padding:0 4px;white-space:nowrap}
+.planning-shortcut:hover{color:var(--accent)}
+.scope-note{text-align:center;margin-bottom:15px}
+.weekly-progress{border-top:1px solid var(--line);margin-top:18px;padding-top:16px}
+.daily-progress>label{font-size:9px;letter-spacing:.12em;color:var(--muted);margin-bottom:7px}
+.day-progress-heading{display:flex;align-items:center;gap:8px}
+.day-progress-heading select{font-size:12px;padding:6px;min-height:32px;margin:0;width:100%;min-width:0}
+.day-progress-heading strong{font-size:12px;color:var(--accent)}
+.day-progress-track{height:5px;border-radius:10px;overflow:hidden;background:var(--line);margin:12px 0}
+.day-progress-track span{height:100%;display:block;background:var(--accent);border-radius:inherit}
+.day-lock-state{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);margin:8px 0 0}
+.is-locked{color:var(--accent)!important}
+.day-lock-state svg,.day-lock-badge svg{width:15px;height:15px;flex:none}
+.day-changes-link{font-size:10px;text-align:left;padding:4px 0;border:0;background:none;color:var(--muted)}
+.day-changes-link:hover{color:var(--accent)}
+.summary-total{margin:6px 0 12px}.summary-total strong{font-size:21px;font-weight:500}
+.summary-work{border-top:1px solid var(--line);margin-top:8px;padding-top:9px}
+.sidebar-summary .stat{display:flex;flex-direction:row;justify-content:space-between;gap:8px}
+.sidebar-summary .stat b{order:1}
+.sidebar-summary .metric-note{font-size:10px;line-height:1.55;color:var(--muted)}
+.day-lock-badge{position:static;flex:0 0 18px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:2px 0;border:0;background:none;color:var(--accent);font-size:9px;line-height:1.1;z-index:2}
+.deviation-totals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 0;border-block:1px solid var(--line)}
+.deviation-totals span{display:block;font-size:11px;color:var(--muted)}
+.deviation-totals b{font-size:17px;font-weight:500}
+.day-deviation ul{list-style:none;padding:0;max-height:260px;overflow:auto}
+.day-deviation li{padding:10px 0;border-bottom:1px solid var(--line)}
+.day-deviation small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.change-kind{font-size:10px;color:var(--accent);margin-left:10px}
+#titleRecords{max-height:270px;overflow:auto;margin:18px 0;display:grid;gap:6px}
+.title-record{display:flex;gap:8px;align-items:center}.title-record-edit{flex:1;min-width:0;text-align:left;padding:9px 12px}
+.title-record-edit b{display:block;overflow-wrap:anywhere}.title-record-edit small{display:block;color:var(--muted);font-weight:400;margin-top:2px}
+.title-record-edit[aria-pressed=true]{border-color:var(--accent)}
+.title-record>button:last-child{font-size:11px}.title-record.archived{opacity:.6}
+#titleRecordForm{border-top:1px solid var(--line);padding-top:18px;margin-top:18px}
+#titleRecordStatus,#planningStatus{font-size:12px;color:var(--accent)}
+#planningForm{padding-bottom:18px;border-bottom:1px solid var(--line)}
+#manageTitles{border:0;background:none;padding:0;color:var(--accent)}
+@media(max-width:1250px){.header-context{display:none}.header-inner{gap:10px}.header-actions{gap:6px}.header-actions .save-status{margin-left:4px}}
+@media(max-width:900px){.header-inner{flex-wrap:wrap;padding:8px 0}.header-actions{width:100%;justify-content:flex-end}.brand{padding-left:10px}.sidebar-label{padding-left:44px}}
+@media(max-width:760px){.brand{order:0;width:auto;flex:none}.header-actions{order:1}.brand h1{font-size:14px}.deviation-totals{gap:7px}.deviation-totals b{font-size:14px}.planning-shortcut{font-size:8px}.title-record>button:last-child{padding:8px}}
+
+.week-progress-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.week-progress-heading strong{color:var(--accent);font-size:12px}
+#sidebarProgress>.day-progress-heading{margin-top:9px}

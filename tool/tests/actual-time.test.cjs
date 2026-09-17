@@ -1,0 +1,41 @@
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs');
+const {pathToFileURL}=require('node:url'),P=require('../js/planner.js');
+(async()=>{
+ const browser=await chromium.launch({headless:true,channel:'msedge'});
+ try{
+  const page=await browser.newPage({viewport:{width:1560,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+  const data=P.createData(),week=P.ensureWeek(data,'2026-09-14');
+  week.items=[{id:'job',title:'Rendering',day:'Montag',start:'09:00',end:'12:00',cat:'Kunde',hourlyRateCents:12000,done:true},{id:'open',title:'Offener Job',day:'Dienstag',start:'09:00',end:'10:00',cat:'Kunde',hourlyRateCents:12000,actualMinutes:60,done:false}];
+  await page.goto(pathToFileURL(path.resolve(__dirname,'../../index.html')).href);
+  await page.evaluate(data=>localStorage.setItem('jsOfficeWeek_v1',JSON.stringify(data)),data);await page.reload();
+  const saved=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('jsOfficeWeek_v1')));
+  await page.locator('[data-section=insights]').click();assert.match(await page.locator('#insightsPanel [data-finance=done]').textContent(),/^0,00/);
+  assert.match(await page.locator('#insightsPanel .finance-missing-time').textContent(),/Arbeitszeit: 1/);
+  await page.locator('[data-section=week]').click();await page.locator('[data-id=job] .item-main').click();
+  assert.equal(await page.locator('#itemActualTime').inputValue(),'');
+  await page.locator('#itemActualTime').fill('1:75');await page.locator('#itemForm [type=submit]').click();assert.match(await page.locator('#itemError').textContent(),/Stunden:Minuten/);
+  assert.equal((await saved()).weeks[week.weekStart].items[0].actualMinutes,undefined);
+  await page.locator('#itemActualTime').fill('1:07');assert.match(await page.locator('#itemActualFeePreview').textContent(),/134,00/);
+  assert.match(await page.locator('#itemFeePreview').textContent(),/360,00/);
+  const out=path.join(__dirname,'artifacts');fs.mkdirSync(out,{recursive:true});await page.screenshot({path:path.join(out,'actual-time-editor.png')});
+  await page.locator('#itemForm [type=submit]').click();await page.reload();assert.equal((await saved()).weeks[week.weekStart].items[0].actualMinutes,67);
+  await page.locator('[data-section=insights]').click();assert.match(await page.locator('#insightsPanel [data-finance=done]').textContent(),/134,00/);
+  assert.equal(await page.locator('.completed-cards .group-work strong').textContent(),'1:07 h');assert.equal(await page.locator('#insightsPanel .finance-missing-time').count(),0);
+  await page.screenshot({path:path.join(out,'actual-time-insights.png')});
+  await page.locator('[data-section=week]').click();await page.locator('[data-id=job] .resize-handle').press('ArrowDown');
+  await page.locator('[data-section=month]').click();assert.match(await page.locator('#monthPanel [data-finance=done]').textContent(),/134,00/);
+  await page.locator('[data-section=week]').click();await page.locator('[data-id=job] .item-check').uncheck();
+  await page.locator('[data-section=insights]').click();assert.match(await page.locator('#insightsPanel [data-finance=done]').textContent(),/^0,00/);
+  await page.locator('[data-section=week]').click();await page.locator('[data-id=job] .item-check').check();await page.locator('[data-id=job] .item-main').click();
+  await page.locator('#itemActualTime').fill('0:00');await page.locator('#itemForm [type=submit]').click();
+  await page.locator('[data-section=insights]').click();assert.equal(await page.locator('#insightsPanel .finance-missing-time').count(),0);
+  await page.locator('[data-section=week]').click();await page.locator('[data-id=job] .item-main').click();await page.locator('#itemActualTime').fill('');await page.locator('#itemForm [type=submit]').click();
+  assert.equal((await saved()).weeks[week.weekStart].items[0].actualMinutes,null);
+  await page.locator('[data-section=insights]').click();assert.equal(await page.locator('#insightsPanel .finance-missing-time').count(),1);
+  await page.locator('#languageButton').click();await page.getByRole('menuitemradio',{name:'English',exact:true}).click();assert.match(await page.locator('#insightsPanel .finance-note').textContent(),/manually recorded/);
+  await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await page.screenshot({path:path.join(out,'actual-time-mobile.png')});assert.deepEqual(errors,[]);
+  console.log('PASS: explicit actual time, missing versus zero, minute precision, distinct previews, validation/reload/removal, only completed, no fallback after plan resize, month/week, EN/mobile.');
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});
