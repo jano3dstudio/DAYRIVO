@@ -1,3 +1,11 @@
+## Öffentlicher Quellstand · 24.09.2026
+
+Der Quellcode dieses persönlichen Prototyps ist öffentlich einsehbar. Es wird keine neue MIT-/GPL- oder andere allgemeine Open-Source-Lizenz erteilt. Bestehende Rechte und Lizenzen an enthaltenen Drittanbieterkomponenten bleiben erhalten. Für weitergehende Nutzung oder Weitergabe bitte die jeweiligen Bedingungen beachten bzw. Jona kontaktieren.
+
+Die Releases sind experimentelle, vorhandene Buildstände. ZIP-Integrität und Prüfsummen sind geprüft; die Veröffentlichung ist keine neue Funktionsabnahme oder Zusicherung für produktive Arbeit. Private Profile, persönliche Daten und Zugangsdaten gehören nicht in dieses Repository.
+
+Historische Anleitung, aktueller Status siehe oben:
+
 # DAYRIVO auf GitHub
 
 Stand: 17.09.2026. Lokales Repository: `JS_GitHub/DAYRIVO`. Verbundenes Ziel: `https://github.com/jano3dstudio/DAYRIVO.git`. Das Entwicklungs-Repository bleibt privat. Eine öffentliche Browser-Ausgabe ist separat freigegeben; siehe [Web-Veröffentlichung](PUBLIC_WEB.md). Eine Open-Source-Lizenz ist nicht gesetzt. Der Upload erfolgt erst mit Push; eine Remote-Adresse allein bedeutet noch keinen hochgeladenen Quellcode.
