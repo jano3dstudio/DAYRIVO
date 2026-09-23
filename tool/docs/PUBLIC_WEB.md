@@ -10,9 +10,9 @@ Aus `tool/`: `npm run build:web` erzeugt `dist/public/index.html`; `npm run test
 
 Nur die erzeugte `dist/public/index.html` in das öffentliche Repository hochladen. Prüfberichte und Review-Dateien aus dem lokalen Ausgabeordner nicht mit hochladen. GitHub Pages dort mit Branch `main` und Ordner `/(root)` aktivieren. Veröffentlichung und echte URL anschließend kontrollieren. GitHub Pages im privaten Entwicklungs-Repository war im aktuellen Konto ohne Tarifupgrade nicht verfügbar.
 
-Geplante URL, erst nach erfolgreichem Deployment als live behandeln: https://jano3dstudio.github.io/DAYRIVO-web/.
+Live-URL: https://jano3dstudio.github.io/DAYRIVO-web/.
 
-Stand: öffentliches Auslieferungs-Repository erstellt; Datei lokal gebaut und getestet. Chrome-Dateiupload meldet trotz durch Jona bestätigter Dateifreigabe weiterhin Not allowed; der GitHub-Connector lehnt Schreiben mit 403 Resource not accessible by integration ab. Manuelle Upload-Seite mit Commit-Beschreibung für Jona vorbereitet. Noch kein Upload, Pages-Deployment oder Live-Test bestätigt.
+Stand 17.09.2026: Jona hat index.html manuell hochgeladen (Commit 4b47d7876d5008b6831befbcbdc078484e3a17a1). GitHub Pages ist auf main / (root) aktiviert. Deployment 35209754310 erfolgreich (51 Sekunden). Live-URL in Chrome geöffnet: DAYRIVO-Onboarding mit fünf allgemeinen Wochenvorlagen sichtbar; keine erfassten Konsolenfehler beim Start. Keine persönlichen Wochen importiert oder Testeinträge im Nutzerprofil gespeichert. Die vollständigen Interaktionsprüfungen wurden zuvor am lokalen öffentlichen Build ausgeführt. Automatischer Dateiupload und Connector-Schreibzugriff bleiben ungeklärt; erfolgreicher manueller Upload ist kein Nachweis für deren Reparatur.
 
 ## Unterschiede zur lokalen Version
 

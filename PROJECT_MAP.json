@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "dayrivo",
+  "name": "DAYRIVO",
+  "appRootFromMap": ".",
+  "source": "tool",
+  "repository": ".",
+  "build": "tool/desktop/build.ps1",
+  "rules": "tool/AGENTS.md",
+  "verification": "tool/desktop/VERIFICATION.md",
+  "launch": "DAYRIVO.exe",
+  "launchKind": "file",
+  "modulePlan": "tool/app-kit.plan.json",
+  "packages": [
+    "tool/dist"
+  ],
+  "testAndScriptFolders": [
+    "tool/desktop/tests",
+    "tool/scripts",
+    "tool/tests"
+  ],
+  "pathPolicy": "Existing source, build, launch and data paths retained; no automatic migration.",
+  "gitPolicy": "Source and documentation in Git; local binaries, packages, profiles and caches excluded. Pinned build dependencies may stay tracked.",
+  "development": {
+    "guide": "DEVELOPMENT.md",
+    "requiredPaths": [
+      "tool/desktop/.deps/node.exe",
+      "tool/desktop/.deps/NODE-LICENSE.txt",
+      "tool/desktop/.deps/Microsoft.Web.WebView2.Core.dll",
+      "tool/desktop/.deps/Microsoft.Web.WebView2.WinForms.dll",
+      "tool/desktop/.deps/WebView2Loader.dll",
+      "tool/desktop/.deps/LICENSE.txt"
+    ],
+    "buildAndTestCommands": [
+      "node",
+      "npm"
+    ],
+    "frameworkCompiler": true,
+    "manualChecks": [
+      "WebView2 Runtime / Host / GUI-Pruefungen siehe DEVELOPMENT.md",
+      "Fremdrechner-Neuaufbau nicht durch eine Pfadpruefung belegt"
+    ]
+  },
+  "icon": {
+    "source": "tool/assets/dayform-mark.png",
+    "exports": [
+      "tool/assets/dayrivo.ico"
+    ],
+    "policy": "../jano-app-kit/APP_ICONS.md"
+  }
+}

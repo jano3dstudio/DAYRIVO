@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "app": "dayrivo",
+  "host": "webview2",
+  "state": "prepared",
+  "kitSource": "../../jano-app-kit",
+  "build": "desktop/build.ps1",
+  "seams": [
+    "desktop/Desktop.cs",
+    "desktop/NativeStore.cs",
+    "desktop/desktop-ui.js",
+    "css",
+    "js",
+    "locales"
+  ],
+  "activeModules": [],
+  "candidateModules": [
+    "window",
+    "web",
+    "looks",
+    "mouse-qa"
+  ],
+  "migration": "Webressourcen liegen neben dem Desktop-Host. Ressourcenpfade und Desktop-Bootstrap beim Anschluss erhalten.",
+  "preserve": "jsOfficeWeek_v1, Browser-/Desktop-Daten und Clockodo-Konfiguration getrennt erhalten; keine echten Zeitbuchungen als Test.",
+  "gate": "Gemeinsame Bausteine zuerst in Second Brain mit Jona abstimmen. Danach App einzeln anbinden, bauen und visuell pruefen.",
+  "shell": "pending-reference-review",
+  "lookAdapter": "integration-required"
+}

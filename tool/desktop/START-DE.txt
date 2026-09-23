@@ -1,0 +1,18 @@
+DAYRIVO fuer Windows
+
+1. DAYRIVO.exe starten. Keine separate Node.js-Installation notwendig.
+2. Bestehenden Browserplan zuerst dort ueber Backup sichern.
+3. In DAYRIVO beim ersten Start Browserplan importieren waehlen und das JSON-Backup laden.
+   Oder eine neue Wochenvorlage auswaehlen.
+4. Settings > Clockodo > Verbinden: E-Mail und API-Key eingeben.
+   Der Key gilt nur fuer die Sitzung. Es werden keine Zeiten an Clockodo geschrieben.
+
+Der Plan liegt unter %LOCALAPPDATA%\DAYRIVO\desktop\planner.json.
+Backup in der App sichert eine weitere Datei. Settings bietet den Datenordner an.
+Browser und Desktop synchronisieren sich nicht automatisch.
+
+Voraussetzung: Windows 10/11 x64, .NET Framework 4.8 und Microsoft Edge WebView2 Runtime.
+WebView2: https://developer.microsoft.com/microsoft-edge/webview2/
+Die EXE ist noch nicht digital signiert und besitzt keinen automatischen Updater.
+
+Quellcode und technische Hinweise: tool/desktop/README.md im DAYRIVO-Projekt.

@@ -1,0 +1,37 @@
+{
+  "platform": "win-x64",
+  "webview2": "1.0.2903.40",
+  "node": "22.22.3",
+  "files": [
+    {
+      "file": "LICENSE.txt",
+      "sha256": "0AF8F1B807512AAE39C2AC1AA4D0CAE65CABECB6FD554B8439A5162A0D6ECA55",
+      "bytes": 1487
+    },
+    {
+      "file": "Microsoft.Web.WebView2.Core.dll",
+      "sha256": "88A3B62F45225A811CDB85DF6DFD95C2BFF9A0E43E3B04F813B125EACA56CC9F",
+      "bytes": 603712
+    },
+    {
+      "file": "Microsoft.Web.WebView2.WinForms.dll",
+      "sha256": "29FC954C3FDE1749817D158F3DD5EBE9EFD3B3CE9708D86092FB1E9F023A1CB0",
+      "bytes": 38488
+    },
+    {
+      "file": "NODE-LICENSE.txt",
+      "sha256": "8CC9BB466B19FC7E7CC99D03E9DF1132021FDA8B01EEA2624C58BB372DBEF576",
+      "bytes": 148217
+    },
+    {
+      "file": "node.exe",
+      "sha256": "780F44F2C53C108BAE261ADA21A525B4BFE733C020AC85E41BFE94479090AC9B",
+      "bytes": 86969160
+    },
+    {
+      "file": "WebView2Loader.dll",
+      "sha256": "462B36FD1BE6CA9F7563466A89E57C41EF4A4DEF3E0A84FA885D203AEA4A3AAF",
+      "bytes": 165968
+    }
+  ]
+}

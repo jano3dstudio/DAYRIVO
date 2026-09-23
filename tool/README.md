@@ -2,7 +2,7 @@
 
 A desktop-first weekly planner for freelancers and independent creatives. Make room for life, plan focused work, and compare your morning plan with what you actually finished.
 
-> Private development repository. DAYRIVO is the new proposed product name. No public release or open-source license is declared.
+> Private development repository. The product name is DAYRIVO. The development repository remains private; the public browser edition is packaged separately. No open-source license is declared.
 
 ## Run
 
@@ -84,4 +84,14 @@ Private project; no open-source license has been granted. Publication and licens
 Build and verify with npm run build:web and npm run test:web from tool/. Only the generated dist/public/index.html is published. See [public web delivery](docs/PUBLIC_WEB.md) for the deployment status and differences from the local version.
 
 ## Monatsabschluss (lokaler Pilot)
-Links unter Auswertung: Kundenzeiten aus Clockodo lesen und Projekte/Buchungen als Rechnungsauswahl reservieren. Separate SQLite-Datenbank und Backups unter %LOCALAPPDATA%/DAYRIVO/billing; keine Rechnungen oder Billomat-Schreibzugriffe. Clockodo-Dienst nach dem Update neu starten. Node.js 22.13+ fuer diesen Pilot. Ablauf, offene Live-Abnahme und Billomat-Plan: [BILLING.md](docs/BILLING.md). Test: npm run test:billing.
+Links unter Auswertung: Kundenzeiten aus Clockodo lesen und Projekte/Buchungen als Rechnungsauswahl reservieren. Separate SQLite-Datenbank und Backups unter %LOCALAPPDATA%/DAYRIVO/billing; noch keine fertigen Rechnungen. Clockodo-Dienst nach dem Update neu starten. Node.js 22.13+ fuer diesen Pilot. Ablauf, offene Live-Abnahme und Plan fuer eigene PDF-/E-Rechnungen: [BILLING.md](docs/BILLING.md). Test: npm run test:billing.
+
+## Windows desktop app
+
+Start DAYRIVO.exe in the project root. The existing UI now also runs in its own Windows window, with native file storage, backups and integrated Clockodo sign-in. Import your browser JSON backup on first start; browser and desktop storage do not sync automatically. See [desktop setup and build notes](desktop/README.md). This local desktop build does not publish or update the web edition.
+
+## Entwickler-Einstieg · 21.09.2026
+
+[../DEVELOPMENT.md](../DEVELOPMENT.md) beschreibt Voraussetzungen, konkrete Build-/Testbefehle,
+Datenablage, Modulgrenzen und offene Punkte. Vor Weiterarbeit zuerst dort lesen;
+vorhandene Produktregeln und fachliche Nachweise bleiben massgeblich.
